@@ -80,3 +80,22 @@ provider "template" {
 }
 ```
 
+Identify available storage pools:
+
+```bash
+$ virsh pool-list
+ Name             State    Autostart
+--------------------------------------
+ dirpool          active   yes
+ images           active   yes
+ virt-lightning   active   no
+```
+
+Identify available libvirt networks:
+
+```bash
+$ virsh net-list
+ Name      State    Autostart   Persistent
+--------------------------------------------
+ default   active   yes         yes
+```
