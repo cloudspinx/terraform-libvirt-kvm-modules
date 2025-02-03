@@ -10,7 +10,7 @@ create_hostname_file: ${create_hostname_file}
 hostname: ${vm_hostname}
 fqdn: ${vm_fqdn}
 prefer_fqdn_over_hostname: ${prefer_fqdn_over_hostname}
-timezone: ${time_zone}
+timezone: ${timezone}
 
 ssh_pwauth: ${enable_ssh_pwauth}
 disable_root: ${disable_root_login}
