@@ -100,9 +100,9 @@ data "template_cloudinit_config" "config" {
 #   }
 # }
 
-resource "libvirt_volume" "os_root_disk" {
+resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
-  name   = format("${var.vm_hostname_prefix}-root-disk.qcow2")
+  name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
   pool   = var.storage_pool
   source = var.os_cached_image == "" ? module.os_image.url : var.os_cached_image
   #source = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
@@ -114,7 +114,7 @@ resource "libvirt_volume" "vm_disk_qcow2" {
   name             = format("${var.vm_hostname_prefix}%02d.qcow2", count.index + var.index_start)
   pool             = var.storage_pool
   size             = 1024 * 1024 * 1024 * var.os_disk_size
-  base_volume_id   = var.base_volume_name != null ? null : element(libvirt_volume.os_root_disk, 0).id
+  base_volume_id   = var.base_volume_name != null ? null : element(libvirt_volume.base_image, 0).id
   base_volume_name = var.base_volume_name
   base_volume_pool = var.os_storage_pool_name
 
