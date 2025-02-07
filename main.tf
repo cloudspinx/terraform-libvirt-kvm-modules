@@ -24,15 +24,22 @@ resource "tls_private_key" "ssh_key" {
   rsa_bits  = 4096
 }
 
+resource "local_file" "user_password" {
+  count           = var.set_user_password ? 1 : 0
+  content         = random_password.user_password[0].result
+  filename        = "${path.cwd}/user_password.txt"
+  file_permission = "0600"
+}
+
 resource "local_file" "ssh_private_key" {
-  count     = var.generate_ssh_keys ? 1 : 0
+  count           = var.generate_ssh_keys ? 1 : 0
   content         = tls_private_key.ssh_key[0].private_key_pem
   filename        = "${path.cwd}/sshkey.priv"
   file_permission = "0600"
 }
 
 resource "local_file" "ssh_public_key" {
-  count     = var.generate_ssh_keys ? 1 : 0
+  count           = var.generate_ssh_keys ? 1 : 0
   content         = tls_private_key.ssh_key[0].public_key_openssh
   filename        = "${path.cwd}/sshkey.pub"
   file_permission = "0600"
