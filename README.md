@@ -1,5 +1,48 @@
 # terraform-kvm-modules
 
+## Preparation
+
+Create default storage pool.
+
+```bash
+sudo virsh pool-list
+POOL_PATH="/data/vms"
+POOL_NAME="default"
+sudo mkdir -p $POOL_PATH
+virsh pool-define-as --name $POOL_NAME --type dir --target $POOL_PATH
+virsh pool-build $POOL_NAME
+virsh pool-start $POOL_NAME
+virsh pool-autostart $POOL_NAME
+virsh pool-list --all
+```
+
+Clean stuck vm
+
+```bash
+VM_NAME=""
+POOL_NAME="default"
+sudo virsh destroy $VM_NAME       # Force shutdown the VM
+sudo virsh undefine --remove-all-storage $VM_NAME      # Remove the VM from libvirt
+sudo virsh list --all
+
+terraform state rm module.vm.libvirt_domain.this_domain
+terraform destroy -auto-approve
+```
+
+UBuntu issue: [](https://github.com/dmacvicar/terraform-provider-libvirt/commit/22f096d9)
+
+The solution is disable QEMU default security driver.
+
+```bash
+$ sudo nano /etc/libvirt/qemu.conf
+security_driver = "none"
+```
+Restart `libvirtd` service after making the changes:
+
+```bash
+sudo systemctl restart libvirtd
+```
+
 Repository containing KVM terraform modules
 
 Define backend

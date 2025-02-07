@@ -1,4 +1,6 @@
 version: 2
 ethernets:
-  ${nic}:
+ alleths:
+    match:
+      name: "en*"
     dhcp4: true

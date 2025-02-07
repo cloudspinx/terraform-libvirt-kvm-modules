@@ -93,23 +93,23 @@ data "template_cloudinit_config" "config" {
   }
 }
 
-# data "template_cloudinit_config" "network" {
-#   gzip          = true
-#   base64_encode = true
+data "template_cloudinit_config" "network" {
+  gzip          = true
+  base64_encode = true
 
-#   # Main cloud-config configuration file.
-#   part {
-#     filename     = "network.cfg"
-#     content_type = "text/cloud-config"
-#     content      = templatefile("${path.module}/templates/${var.use_dhcp == true ? "dhcp" : "static"}_network_config.tpl",
-#     {
-#       ip_address    = element(var.ip_address, count.index)
-#       ip_gateway    = var.gateway
-#       ip_nameserver = var.dns_servers
-#       nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
-#     })
-#   }
-# }
+  # Main cloud-config configuration file.
+  part {
+    filename     = "network.cfg"
+    content_type = "text/cloud-config"
+    content      = templatefile("${path.module}/templates/${var.use_dhcp == true ? "dhcp" : "static"}_network_config.tpl",
+    {
+      ip_address    = element(var.ip_address, count.index)
+      ip_gateway    = var.gateway
+      ip_nameserver = var.dns_servers
+      # nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
+    })
+  }
+}
 
 resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
