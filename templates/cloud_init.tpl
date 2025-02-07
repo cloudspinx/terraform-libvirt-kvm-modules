@@ -37,13 +37,9 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     system: False
     shell: ${ssh_user_shell}
-    chpasswd:
-      list: |
-        ${ssh_user_name}:${ssh_user_password}
-      expire: False
     ssh_authorized_keys:
     %{~ for ssh_key in ssh_keys ~}
-    - ${ssh_key}
+      - ${ssh_key}
     %{~ endfor ~}
 
 # Grow root partition to fill the disk
