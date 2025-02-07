@@ -17,41 +17,38 @@ disable_root: ${disable_root_login}
 
 # Add users to the system
 users:
-  %{ if not disable_root_login ~}
+  %{ if disable_root_login == false }
   - name: root
-    lock_passwd: ${lock_root_user_password}
-    %{ if enable_root_password and not lock_root_user_password ~}
+    lock_passwd: false
     chpasswd:
-      users:
-      - {name: root, password: ${root_password}, type: text}
+      list: |
+        root:${root_password}
       expire: False
-    %{ endif ~}
     %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
-     %{~ for ssh_key in ssh_keys ~}
-     - ${ssh_key}
-     %{~ endfor ~}
+      %{~ for ssh_key in ssh_keys ~}
+      - ${ssh_key}
+      %{~ endfor ~}
     %{ endif ~}
-  %{ endif ~}
+  %{ endif }
   - name: ${ssh_user_name}
     gecos: ${ssh_user_name}
     lock-passwd: ${lock_user_password}
     sudo: ALL=(ALL) NOPASSWD:ALL
     system: False
-    %{ if length(ssh_keys) > 0 }
+    %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
      %{~ for ssh_key in ssh_keys ~}
      - ${ssh_key}
      %{~ endfor ~}
     %{ endif }
-    shell: ${user.shell}
-    %{ if set_ssh_user_password and not lock_user_password ~}
+    shell: ${ssh_user_shell}
+    %{ if set_ssh_user_password == true  ~}
     chpasswd:
-      users:
-        - {name: ${ssh_user_name}, password: ${ssh_user_password}}
+      list: |
+        ${ssh_user_name}:${ssh_user_password}
       expire: False
     %{ endif ~}
-  %{~ endfor ~}
 
 # Grow root partition to fill the disk
 growpart:

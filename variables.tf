@@ -1,4 +1,5 @@
 # Domain variables
+
 variable "vm_hostname_prefix" {
   description = "The prefix for the VM name"
   type        = string
@@ -129,6 +130,13 @@ variable "share_filesystem" {
 }
 
 # Networking variables
+
+variable "network_config" {
+  description = "A user defined cloudinit network config"
+  type        = string
+  default     = ""
+}
+
 variable "network_name" {
   description = "The name of the default network to use for the instance"
   type        = string
@@ -214,11 +222,24 @@ variable "lock_user_password" {
   default     = false
 }
 
+variable "enable_root_password" {
+  description = "Enable root password"
+  type        = bool
+  default     = false
+}
+
 variable "set_root_password" {
   description = "Enable setting a root password"
   type        = bool
   default     = false
 }
+
+variable "set_user_password" {
+  description = "Enable setting a root password"
+  type        = bool
+  default     = true
+}
+
 
 variable "expire_root_user_pass" {
   description = "Expire root user password on first login"
@@ -253,7 +274,7 @@ variable "set_ssh_user_password" {
 variable "generate_ssh_keys" {
   description = "Generate SSH keys for the instance"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "timezone" {

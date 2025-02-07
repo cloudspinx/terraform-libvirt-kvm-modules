@@ -33,3 +33,8 @@ override.tf.json
 terraform.rc
 
 *.zip
+
+# Common backup files
+*.swp
+*.bak
+*.tmp
