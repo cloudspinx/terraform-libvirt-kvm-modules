@@ -33,7 +33,7 @@ resource "local_file" "ssh_private_key" {
 
 resource "local_file" "ssh_public_key" {
   count     = var.generate_ssh_keys ? 1 : 0
-  content         = tls_private_key.ssh_key[0].public_key_pem
+  content         = tls_private_key.ssh_key[0].public_key_openssh
   filename        = "${path.cwd}/sshkey.pub"
   file_permission = "0600"
 }
