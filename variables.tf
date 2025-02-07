@@ -91,7 +91,7 @@ variable "graphics" {
 
   validation {
     condition     = contains(["spice", "vnc", "none"], var.graphics)
-    error_message = "Graphics type not supported. Only 'spice' or 'vnc' or 'none' are valid options."
+    error_message = "Graphics type not supported. Only 'spice', 'vnc', or 'none' are valid options."
   }
 }
 
