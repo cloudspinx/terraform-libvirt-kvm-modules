@@ -17,7 +17,7 @@ disable_root: ${disable_root_login}
 
 # Add users to the system
 users:
-  %{ if disable_root_login == false }
+  %{ if disable_root_login == false ~}
   - name: root
     lock_passwd: false
     chpasswd:
@@ -26,24 +26,27 @@ users:
       expire: False
     %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
-      %{~ for ssh_key in ssh_keys ~}
+    %{~ for ssh_key in ssh_keys ~}
       - ${ssh_key}
-      %{~ endfor ~}
+    %{~ endfor ~}
     %{ endif ~}
-  %{ endif }
+  %{ endif ~}
+
   - name: ${ssh_user_name}
     gecos: ${ssh_user_name}
     lock-passwd: ${lock_user_password}
     sudo: ALL=(ALL) NOPASSWD:ALL
     system: False
+    shell: ${ssh_user_shell}
+
     %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
-     %{~ for ssh_key in ssh_keys ~}
-     - ${ssh_key}
-     %{~ endfor ~}
-    %{ endif }
-    shell: ${ssh_user_shell}
-    %{ if set_ssh_user_password == true  ~}
+    %{~ for ssh_key in ssh_keys ~}
+      - ${ssh_key}
+    %{~ endfor ~}
+    %{ endif ~}
+
+    %{ if set_ssh_user_password == true ~}
     chpasswd:
       list: |
         ${ssh_user_name}:${ssh_user_password}
@@ -52,26 +55,26 @@ users:
 
 # Grow root partition to fill the disk
 growpart:
-    mode: auto
-    devices:
-      - "/"
+  mode: auto
+  devices:
+    - "/"
 resize_rootfs: true
 
 # Install packages
-%{ if length(packages) > 0 }
+%{ if length(packages) > 0 ~}
 packages:
   %{~ for pkg in packages ~}
   - ${pkg}
   %{~ endfor ~}
-%{ endif }
+%{ endif ~}
 
 # Command to execute after the first boot (only once)
-%{ if length(runcmds) > 0 }
+%{ if length(runcmds) > 0 ~}
 runcmd:
   %{~ for cmd in runcmds ~}
   - ${cmd}
   %{~ endfor ~}
-%{ endif }
+%{ endif ~}
 
 # Disable IPv6
 %{ if disable_ipv6 ~}
@@ -82,4 +85,5 @@ write_files:
     content: |
       net.ipv6.conf.all.disable_ipv6 = 1
       net.ipv6.conf.default.disable_ipv6 = 1
+      net.ipv6.conf.lo.disable_ipv6 = 1
 %{ endif ~}

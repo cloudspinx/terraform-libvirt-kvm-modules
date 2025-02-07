@@ -166,17 +166,17 @@ variable "ip_address" {
   default     = ["192.168.122.101"]
 }
 
-variable "dns_servers" {
-  description = "List of DNS servers"
-  type        = list(string)
-  default     = ["192.168.122.1"]
-}
-
 variable "ip_gateway" {
   description = "The IP address of the gateway"
   type        = string
   default     = "192.168.122.1"
   }
+
+  variable "dns_servers" {
+  description = "List of DNS servers"
+  type        = list(string)
+  default     = ["192.168.122.1"]
+}
 
 # Cloud-init variables
 
