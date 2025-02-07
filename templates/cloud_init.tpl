@@ -42,6 +42,11 @@ users:
       - ${ssh_key}
     %{~ endfor ~}
 
+# Set password for cloud user
+chpasswd:
+  expire: false
+  users:
+  - {name: ${ssh_user_name}, password: ${ssh_user_password}}
 # Grow root partition to fill the disk
 growpart:
   mode: auto
