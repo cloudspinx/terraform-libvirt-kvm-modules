@@ -94,6 +94,7 @@ data "template_cloudinit_config" "config" {
 }
 
 data "template_cloudinit_config" "network" {
+  count         = var.vm_count
   gzip          = true
   base64_encode = true
 
@@ -106,7 +107,7 @@ data "template_cloudinit_config" "network" {
       ip_address    = element(var.ip_address, count.index)
       ip_gateway    = var.gateway
       ip_nameserver = var.dns_servers
-      # nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
+      nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
     })
   }
 }
