@@ -38,19 +38,14 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     system: False
     shell: ${ssh_user_shell}
-    %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
     %{~ for ssh_key in ssh_keys ~}
     - ${ssh_key}
     %{~ endfor ~}
-    %{ endif ~}
-
-    %{ if set_ssh_user_password == true ~}
     chpasswd:
       list: |
         ${ssh_user_name}:${ssh_user_password}
       expire: False
-    %{ endif ~}
 
 # Grow root partition to fill the disk
 growpart:
