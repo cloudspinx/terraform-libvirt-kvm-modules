@@ -118,6 +118,7 @@ resource "libvirt_volume" "base_image" {
   #source = var.os_cached_image == "" ? module.os_image.url : var.os_cached_image
   source = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
   format = "qcow2"
+  depends_on = [libvirt_pool.default]
 }
 
 resource "libvirt_volume" "vm_disk_qcow2" {
@@ -128,8 +129,8 @@ resource "libvirt_volume" "vm_disk_qcow2" {
   base_volume_id   = var.base_volume_name != null ? null : element(libvirt_volume.base_image, 0).id
   base_volume_name = var.base_volume_name
   base_volume_pool = var.os_storage_pool_name
-
-  format = "qcow2"
+  format           = "qcow2"
+  depends_on       = [libvirt_pool.default]
 }
 
 resource "libvirt_cloudinit_disk" "commoninit" {
