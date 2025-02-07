@@ -27,14 +27,14 @@ resource "tls_private_key" "ssh_key" {
 resource "local_file" "ssh_private_key" {
   count     = var.generate_ssh_keys ? 1 : 0
   content         = tls_private_key.ssh_key[0].private_key_pem
-  filename        = "${path.module}/sshkey.priv"
+  filename        = "${path.cwd}/sshkey.priv"
   file_permission = "0600"
 }
 
 resource "local_file" "ssh_public_key" {
   count     = var.generate_ssh_keys ? 1 : 0
   content         = tls_private_key.ssh_key[0].public_key_pem
-  filename        = "${path.module}/sshkey.pub"
+  filename        = "${path.cwd}/sshkey.pub"
   file_permission = "0600"
 }
 
