@@ -27,7 +27,7 @@ users:
     %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
     %{~ for ssh_key in ssh_keys ~}
-      - ${ssh_key}
+    - ${ssh_key}
     %{~ endfor ~}
     %{ endif ~}
   %{ endif ~}
@@ -38,11 +38,10 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     system: False
     shell: ${ssh_user_shell}
-
     %{ if length(ssh_keys) > 0 ~}
     ssh_authorized_keys:
     %{~ for ssh_key in ssh_keys ~}
-      - ${ssh_key}
+    - ${ssh_key}
     %{~ endfor ~}
     %{ endif ~}
 
