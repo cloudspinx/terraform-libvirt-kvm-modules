@@ -158,7 +158,7 @@ resource "libvirt_domain" "this_domain" {
   network_interface {
     #bridge         = var.bridge_name
     network_name   = "default"
-    wait_for_lease = true
+    wait_for_lease = false
     # hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
   }
 
