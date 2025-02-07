@@ -31,7 +31,6 @@ users:
     %{~ endfor ~}
     %{ endif ~}
   %{ endif ~}
-
   - name: ${ssh_user_name}
     gecos: ${ssh_user_name}
     lock-passwd: ${lock_user_password}
