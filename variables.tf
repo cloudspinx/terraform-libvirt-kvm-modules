@@ -87,11 +87,11 @@ variable "index_start" {
 variable "graphics" {
   description = "Graphics type for instance installation"
   type        = string
-  default     = "spice"
+  default     = "none"
 
   validation {
-    condition     = contains(["spice", "vnc"], var.graphics)
-    error_message = "Graphics type not supported. Only 'spice' or 'vnc' are valid options."
+    condition     = contains(["spice", "vnc", "none"], var.graphics)
+    error_message = "Graphics type not supported. Only 'spice' or 'vnc' or 'none' are valid options."
   }
 }
 
