@@ -123,8 +123,7 @@ resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
   name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
   pool   = var.storage_pool
-  #source = var.os_cached_image == "" ? module.os_image.url : var.os_cached_image
-  source = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+  source = var.os_cached_image == "" ? module.os_image.url : var.os_cached_image
   format = "qcow2"
   depends_on = [libvirt_pool.default]
 }
