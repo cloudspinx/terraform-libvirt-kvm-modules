@@ -38,6 +38,16 @@ resource "local_file" "ssh_public_key" {
   file_permission = "0600"
 }
 
+# Create default storage pool
+resource "libvirt_pool" "default" {
+  count = var.create_default_pool ? 1 : 0
+  name = "default"
+  type = "dir"
+  target {
+    path = "/var/lib/libvirt/images"
+  }
+}
+
 # Volumes creation section
 module "os_image" {
   count      = var.os_cached_image == "" ? 1 : 0

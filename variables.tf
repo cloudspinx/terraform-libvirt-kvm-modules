@@ -96,6 +96,12 @@ variable "graphics" {
 }
 
 # Storage variables
+variable "create_default_pool" {
+  description = "Create a default storage pool"
+  type        = bool
+  default     = false
+}
+
 variable "storage_pool" {
   description = "The storage pool to use for instance volumes"
   type        = string
