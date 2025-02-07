@@ -105,7 +105,7 @@ data "template_cloudinit_config" "network" {
     content      = templatefile("${path.module}/templates/${var.use_dhcp == true ? "dhcp" : "static"}_network_config.tpl",
     {
       ip_address    = element(var.ip_address, count.index)
-      ip_gateway    = var.gateway
+      ip_gateway    = var.ip_gateway
       ip_nameserver = var.dns_servers
       nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
     })
