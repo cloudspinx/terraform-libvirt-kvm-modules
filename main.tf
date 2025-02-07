@@ -155,9 +155,10 @@ resource "libvirt_domain" "this_domain" {
   cloudinit = element(libvirt_cloudinit_disk.commoninit[*].id, count.index)
 
   network_interface {
-    bridge         = var.bridge_name
+    #bridge         = var.bridge_name
+    network_name   = "default"
     wait_for_lease = true
-    hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
+    # hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
   }
 
   # xml {
