@@ -125,7 +125,7 @@ resource "libvirt_volume" "vm_disk_qcow2" {
 resource "libvirt_cloudinit_disk" "commoninit" {
   count = var.vm_count
   name  = format("${var.vm_hostname_prefix}_init%02d.iso", count.index + 1)
-  user_data = data.template_cloudinit_config.config.rendered
+  user_data = data.template_cloudinit_config.config[count.index].rendered
   #network_config = data.template_cloudinit_config.network.rendered
 }
 
