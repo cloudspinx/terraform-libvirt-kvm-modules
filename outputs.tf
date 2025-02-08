@@ -12,6 +12,13 @@ output "user_password" {
   value     = var.set_user_password ? random_password.user_password[0].result : ""
 }
 
+output "all_vm_ips" {
+  value = {
+    for idx, vm in libvirt_domain.this_domain :
+    vm.name => try(vm.network_interface[0].addresses[0], "N/A")
+  }
+}
+
 output "ssh_commands" {
   value = {
     for idx, vm in libvirt_domain.this_domain :
