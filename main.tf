@@ -222,21 +222,4 @@ resource "libvirt_domain" "this_domain" {
       autoport    = true
     }
   }
-
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "echo \"Virtual Machine \"$(hostname)\" is UP!\"",
-  #     "date"
-  #   ]
-  #   connection {
-  #     type                = "ssh"
-  #     user                = var.ssh_user_name
-  #     host                = self.network_interface[0].addresses[0]
-  #     private_key         = local.ssh_private_key
-  #     timeout             = "2m"
-  #     bastion_host        = var.bastion_host
-  #     bastion_user        = var.bastion_user
-  #     bastion_private_key = try(file(var.bastion_ssh_private_key), var.bastion_ssh_private_key, null)
-  #   }
-  # }
 }
