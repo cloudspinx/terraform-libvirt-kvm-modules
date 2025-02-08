@@ -1,4 +1,4 @@
-# Random resources generation
+# Random resource creation section
 resource "random_password" "root_password" {
   count            = var.set_root_password ? 1 : 0
   length           = 16
@@ -24,6 +24,14 @@ resource "tls_private_key" "ssh_key" {
   rsa_bits  = 4096
 }
 
+# File creation section
+resource "local_file" "root_password" {
+  count           = var.set_root_password ? 1 : 0
+  content         = random_password.root_password[0].result
+  filename        = "${path.cwd}/root_password.txt"
+  file_permission = "0600"
+}
+
 resource "local_file" "user_password" {
   count           = var.set_user_password ? 1 : 0
   content         = random_password.user_password[0].result
@@ -45,7 +53,7 @@ resource "local_file" "ssh_public_key" {
   file_permission = "0600"
 }
 
-# Create default storage pool
+# Storage Pool creation section
 resource "libvirt_pool" "default" {
   count = var.create_default_pool ? 1 : 0
   name = "default"
@@ -55,7 +63,7 @@ resource "libvirt_pool" "default" {
   }
 }
 
-# Volumes creation section
+# OS Image creation section
 module "os_image" {
   count      = var.os_cached_image == "" ? 1 : 0
   source     = "./modules/os-images"
@@ -63,12 +71,12 @@ module "os_image" {
   os_version = var.os_version
 }
 
+# Cloud-init configuration section
 data "template_cloudinit_config" "config" {
   count         = var.vm_count
   gzip          = true
   base64_encode = true
 
-  # Main cloud-config configuration file.
   part {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
@@ -119,6 +127,14 @@ data "template_cloudinit_config" "network" {
   }
 }
 
+resource "libvirt_cloudinit_disk" "commoninit" {
+  count = var.vm_count
+  name  = format("${var.vm_hostname_prefix}_init%02d.iso", count.index + 1)
+  user_data = data.template_cloudinit_config.config[count.index].rendered
+  network_config = data.template_cloudinit_config.network.rendered
+}
+
+# Volume creation section
 resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
   name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
@@ -140,13 +156,6 @@ resource "libvirt_volume" "vm_disk_qcow2" {
   depends_on       = [libvirt_pool.default]
 }
 
-resource "libvirt_cloudinit_disk" "commoninit" {
-  count = var.vm_count
-  name  = format("${var.vm_hostname_prefix}_init%02d.iso", count.index + 1)
-  user_data = data.template_cloudinit_config.config[count.index].rendered
-  #network_config = data.template_cloudinit_config.network.rendered
-}
-
 # Domains creation section
 resource "libvirt_domain" "this_domain" {
   count  = var.vm_count
@@ -162,8 +171,8 @@ resource "libvirt_domain" "this_domain" {
   cloudinit = element(libvirt_cloudinit_disk.commoninit[*].id, count.index)
 
   network_interface {
-    #bridge         = var.bridge_name
-    network_name   = "default"
+    bridge         = var.bridge_name
+    # network_name   = "default"
     wait_for_lease = false
     # hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
   }
