@@ -83,6 +83,7 @@ data "template_cloudinit_config" "config" {
     content      = templatefile("${path.module}/templates/cloud_init.tpl",
     {
       timezone                  = var.timezone
+      manage_etc_hosts          = var.manage_etc_hosts
       preserve_hostname         = var.preserve_hostname
       create_hostname_file      = var.create_hostname_file
       vm_hostname               = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
