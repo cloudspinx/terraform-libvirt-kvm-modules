@@ -36,12 +36,6 @@ variable "base_volume_name" {
   default     = null
 }
 
-variable "os_storage_pool_name" {
-  description = "Name of base OS image"
-  type        = string
-  default     = "default"
-}
-
 variable "os_name" {
   description = "The name of the os to use"
   type        = string
