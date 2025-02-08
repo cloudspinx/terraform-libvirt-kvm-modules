@@ -139,7 +139,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
   name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
-  pool   = var.storage_pool
+  pool   = var.create_default_pool ? libvirt_pool.default[0].name : var.storage_pool
   source = var.os_cached_image == "" ? module.os_image[0].url : var.os_cached_image
   format = "qcow2"
   depends_on = [libvirt_pool.default]
@@ -152,7 +152,7 @@ resource "libvirt_volume" "vm_disk_qcow2" {
   size             = 1024 * 1024 * 1024 * var.os_disk_size
   base_volume_id   = var.base_volume_name != null ? null : element(libvirt_volume.base_image, 0).id
   base_volume_name = var.base_volume_name
-  base_volume_pool = var.os_storage_pool_name
+  base_volume_pool = var.create_default_pool ? libvirt_pool.default[0].name : var.storage_pool
   format           = "qcow2"
   depends_on       = [libvirt_pool.default]
 }
