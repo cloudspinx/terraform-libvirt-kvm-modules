@@ -172,8 +172,8 @@ resource "libvirt_domain" "this_domain" {
   cloudinit = element(libvirt_cloudinit_disk.commoninit[*].id, count.index)
 
   network_interface {
-    # bridge         = var.bridge_name
-    network_name   = "default"
+    bridge         = var.bridge_name
+    # network_name   = "default"
     wait_for_lease = true
     hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
   }
@@ -239,37 +239,4 @@ resource "libvirt_domain" "this_domain" {
   #     bastion_private_key = try(file(var.bastion_ssh_private_key), var.bastion_ssh_private_key, null)
   #   }
   # }
-}
-
-resource "null_resource" "wait_for_ipv4" {
-  count = var.vm_count
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo "Waiting for IPv4 on ${libvirt_domain.this_domain[count.index].name}..."
-      timeout=10  # Set timeout in seconds
-      start_time=$(date +%s)
-
-      while true; do
-        ip=$(virsh domifaddr ${libvirt_domain.this_domain[count.index].name} | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
-
-        if [ -n "$ip" ]; then
-          echo "IPv4 found: $ip"
-          exit 0
-        fi
-
-        current_time=$(date +%s)
-        elapsed=$((current_time - start_time))
-
-        if [ "$elapsed" -ge "$timeout" ]; then
-          echo "❌ ERROR: IPv4 not assigned within $timeout seconds" >&2
-          exit 1  # Fails Terraform apply
-        fi
-
-        sleep 1
-      done
-    EOT
-  }
-
-  depends_on = [libvirt_domain.this_domain]
 }

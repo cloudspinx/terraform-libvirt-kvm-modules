@@ -12,20 +12,6 @@ output "user_password" {
   value     = var.set_user_password ? random_password.user_password[0].result : ""
 }
 
-output "all_vm_ips" {
-  value = {
-    for idx, vm in libvirt_domain.this_domain :
-    vm.name => try(
-      element(
-        [for ip in vm.network_interface[0].addresses : ip if can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$", ip))],
-        0
-      ),
-      "N/A"
-    )
-  }
-}
-
-
 output "ssh_commands" {
   value = {
     for idx, vm in libvirt_domain.this_domain :
