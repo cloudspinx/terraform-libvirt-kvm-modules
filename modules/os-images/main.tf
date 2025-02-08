@@ -32,6 +32,25 @@ locals {
       "11"        = "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2",
       "10"        = "https://cloud.debian.org/images/cloud/buster/latest/debian-10-generic-amd64.qcow2"
     },
+    "fedora" = {
+      "latest"   = "https://download.fedoraproject.org/pub/fedora/linux/releases/41/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41-1.4.x86_64.qcow2",
+      "41"       = "https://download.fedoraproject.org/pub/fedora/linux/releases/41/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41-1.4.x86_64.qcow2",
+      "40"       = "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/x86_64/images/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2"
+    },
+    "alpine" = {
+      "latest"   = "https://dl-cdn.alpinelinux.org/alpine/v3.21/releases/cloud/generic_alpine-3.21.2-x86_64-bios-tiny-r0.qcow2",
+      "3.21"     = "https://dl-cdn.alpinelinux.org/alpine/v3.21/releases/cloud/generic_alpine-3.21.2-x86_64-bios-tiny-r0.qcow2",
+      "3.20"     = "https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/cloud/nocloud_alpine-3.20.5-x86_64-bios-tiny-r0.qcow2"
+    },
+    "amazonlinux" = {
+      "latest"   = "https://cdn.amazonlinux.com/al2023/os-images/2023.6.20250203.1/kvm/al2023-kvm-2023.6.20250203.1-kernel-6.1-x86_64.xfs.gpt.qcow2",
+      "2023"     = "https://cdn.amazonlinux.com/al2023/os-images/2023.6.20250203.1/kvm/al2023-kvm-2023.6.20250203.1-kernel-6.1-x86_64.xfs.gpt.qcow2"
+    },
+    "opensuse" = {
+      "latest"   = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.6/images/openSUSE-Leap-15.6.x86_64-NoCloud.qcow2",
+      "15.6"     = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.6/images/openSUSE-Leap-15.6.x86_64-NoCloud.qcow2",
+      "15.5"     = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.5/images/openSUSE-Leap-15.5.x86_64-NoCloud.qcow2"
+    },
     "arch-linux" = {
       "latest"   = "https://linuximages.de/openstack/arch/arch-openstack-LATEST-image-bootstrap.qcow2"
     },
