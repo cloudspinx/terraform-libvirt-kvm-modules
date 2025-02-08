@@ -74,8 +74,8 @@ module "os_image" {
 # Cloud-init configuration section
 data "template_cloudinit_config" "config" {
   count         = var.vm_count
-  gzip          = true
-  base64_encode = true
+  gzip          = false
+  base64_encode = false
 
   part {
     filename     = "init.cfg"
