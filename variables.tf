@@ -48,8 +48,8 @@ variable "os_version" {
   default     = "latest"
 }
 
-variable "os_cached_image" {
-  description = "If the os image you wish to use is cached locally then set the path to it in this variable"
+variable "custom_image_url" {
+  description = "Path to locally cached image or remote URL"
   type        = string
   default     = ""
 }
