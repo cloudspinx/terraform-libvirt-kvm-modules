@@ -51,7 +51,7 @@ locals {
       "15.6"     = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.6/images/openSUSE-Leap-15.6.x86_64-NoCloud.qcow2",
       "15.5"     = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.5/images/openSUSE-Leap-15.5.x86_64-NoCloud.qcow2"
     },
-    "arch-linux" = {
+    "archlinux" = {
       "latest"   = "https://linuximages.de/openstack/arch/arch-openstack-LATEST-image-bootstrap.qcow2"
     },
     "freebsd" = {
