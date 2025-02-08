@@ -189,6 +189,12 @@ variable "package_update" {
 variable "preserve_hostname" {
   description = "Preserve the hostname of the instance"
   type        = bool
+  default     = false
+}
+
+variable "manage_etc_hosts" {
+  description = "Manage the /etc/hosts file"
+  type        = bool
   default     = true
 }
 
