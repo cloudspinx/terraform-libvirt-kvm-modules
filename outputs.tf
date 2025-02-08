@@ -22,10 +22,10 @@ output "public_key" {
   sensitive=true
 }
 
-# output "ip_address" {
-#   value = libvirt_domain.this_domain[*].network_interface[0].addresses[0]
-# }
+output "ip_address" {
+  value = libvirt_domain.this_domain[*].network_interface[0].addresses[0]
+}
 
-# output "name" {
-#   value = libvirt_domain.this_domain[*].name
-# }
+output "name" {
+  value = libvirt_domain.this_domain[*].name
+}
