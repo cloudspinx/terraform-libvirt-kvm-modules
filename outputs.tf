@@ -15,9 +15,13 @@ output "user_password" {
 output "all_vm_ips" {
   value = {
     for idx, vm in libvirt_domain.this_domain :
-    vm.name => try(vm.network_interface[0].addresses[0], "N/A")
+    vm.name => try(
+      element([for ip in vm.network_interface[0].addresses : ip if can(regex("\\.", ip))], 0),
+      "N/A"
+    )
   }
 }
+
 
 output "ssh_commands" {
   value = {
