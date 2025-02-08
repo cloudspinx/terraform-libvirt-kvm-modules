@@ -5,6 +5,7 @@ package_update: false
 package_upgrade: false
 
 # Host management
+manage_etc_hosts: ${manage_etc_hosts}
 preserve_hostname: ${preserve_hostname}
 create_hostname_file: ${create_hostname_file}
 hostname: ${vm_hostname}
