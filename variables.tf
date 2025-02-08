@@ -348,7 +348,7 @@ variable "disable_ipv6" {
   default     = false
 }
 
-# Bastion
+# Bastion (maybe for future use in air-gapped environments)
 variable "bastion_host" {
   description = "The bastion host to use for SSH connection"
   type        = string
