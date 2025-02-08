@@ -339,7 +339,7 @@ variable "ssh_keys" {
 variable "disable_ipv6" {
   description = "Disable IPv6 on the instance"
   type        = bool
-  default     = false
+  default     = true
 }
 
 # Bastion
