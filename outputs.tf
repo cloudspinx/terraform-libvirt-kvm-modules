@@ -12,20 +12,16 @@ output "user_password" {
   value     = var.set_user_password ? random_password.user_password[0].result : ""
 }
 
-output "private_key" {
-  value = var.generate_ssh_keys ? tls_private_key.ssh_key[0].private_key_pem : ""
-  sensitive=true
+output "hostname_ip_map" {
+  value = {
+    for idx, vm in libvirt_domain.this_domain :
+    vm.name => try(vm.network_interface[0].addresses[0], "N/A")
+  }
 }
 
-output "public_key" {
-  value = var.generate_ssh_keys ? tls_private_key.ssh_key[0].public_key_openssh : ""
-  sensitive=true
-}
-
-output "ip_address" {
-  value = libvirt_domain.this_domain[*].network_interface[0].addresses[0]
-}
-
-output "name" {
-  value = libvirt_domain.this_domain[*].name
+output "ssh_commands" {
+  value = {
+    for idx, vm in libvirt_domain.this_domain :
+    vm.name => format("ssh -i %s %s@%s", "${path.cwd}/sshkey.priv", var.ssh_user_name, try(vm.network_interface[0].addresses[0], "N/A"))
+  }
 }
