@@ -59,7 +59,7 @@ resource "libvirt_pool" "default" {
   name = "default"
   type = "dir"
   target {
-    path = "/var/lib/libvirt/images"
+    path = var.default_pool_path
   }
 }
 

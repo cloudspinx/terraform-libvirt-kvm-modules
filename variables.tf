@@ -102,6 +102,12 @@ variable "create_default_pool" {
   default     = false
 }
 
+variable "default_pool_path" {
+  description = "The path to the default storage pool"
+  type        = string
+  default     = "/var/lib/libvirt/images"
+}
+
 variable "storage_pool" {
   description = "The storage pool to use for instance volumes"
   type        = string
