@@ -16,7 +16,10 @@ output "all_vm_ips" {
   value = {
     for idx, vm in libvirt_domain.this_domain :
     vm.name => try(
-      element([for ip in vm.network_interface[0].addresses : ip if can(regex("\\.", ip))], 0),
+      element(
+        [for ip in vm.network_interface[0].addresses : ip if can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$", ip))],
+        0
+      ),
       "N/A"
     )
   }
