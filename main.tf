@@ -249,7 +249,7 @@ resource "null_resource" "wait_for_ipv4" {
       echo "Waiting for IPv4 on ${libvirt_domain.this_domain[count.index].name}..."
       while true; do
         ip=$(virsh domifaddr ${libvirt_domain.this_domain[count.index].name} | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
-        if [[ -n "$ip" ]]; then
+        if [ -n "$ip" ]; then  # <-- POSIX-compliant syntax
           echo "IPv4 found: $ip"
           break
         fi
@@ -260,3 +260,4 @@ resource "null_resource" "wait_for_ipv4" {
 
   depends_on = [libvirt_domain.this_domain]
 }
+
