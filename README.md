@@ -77,7 +77,7 @@ To streamline instance creation, this module provides two options for sourcing c
 
 Table of images populated into sub-module: `modules/os-images`:
 
-# Supported OS Images
+##### Supported OS Images
 
 | **OS Name**       | **Version** | **Latest Version** |
 |-------------------|------------|--------------------|
