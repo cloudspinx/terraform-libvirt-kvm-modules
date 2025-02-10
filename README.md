@@ -79,7 +79,7 @@ Table of images populated into sub-module: `modules/os-images`:
 
 ##### Supported OS Images
 
-| **OS Name**       | **Version** | **Latest Version** |
+| **OS Name**       | **Version** | **Latest Version(Default choice)** |
 |-------------------|------------|--------------------|
 | **ubuntu**       | latest     | 24.04              |
 |                 | 24.04      |                    |
