@@ -35,37 +35,6 @@ virsh pool-autostart $POOL_NAME
 virsh pool-list --all
 ```
 
-## Tips and Tricks
-
-Cleaning broken VM creation (bad terraform state)
-
-```bash
-VM_NAME="server01"
-POOL_NAME="default"
-sudo virsh destroy $VM_NAME       # Force shutdown the VM
-sudo virsh undefine --remove-all-storage $VM_NAME      # Remove the VM from libvirt
-sudo virsh list --all
-
-terraform state rm module.vm.libvirt_domain.this_domain
-terraform destroy -auto-approve
-```
-
-### Solving Could not open '/var/lib/libvirt/images/<FILE_NAME>': Permission denied
-The [Issue link](https://github.com/dmacvicar/terraform-provider-libvirt/commit/22f096d9)
-
-A quick solution is to disable QEMU default security driver.
-
-```bash
-$ sudo nano /etc/libvirt/qemu.conf
-security_driver = "none"
-```
-
-Then restart `libvirtd` service after making the changes:
-
-```bash
-sudo systemctl restart libvirtd
-```
-
 ### Managing Cloud Image Sources  
 
 To streamline instance creation, this module provides two options for sourcing cloud images:  
@@ -222,3 +191,34 @@ module "libvirt_network" {
 - **Bridge mode** requires setting a valid bridge name in bridge.
 - **NAT mode** supports DHCP, which can be enabled or disabled using dhcp_enabled.
 - **Validation** ensures addresses contain valid CIDR blocks.
+
+## Tips and Tricks
+
+Cleaning broken VM creation (bad terraform state)
+
+```bash
+VM_NAME="server01"
+POOL_NAME="default"
+sudo virsh destroy $VM_NAME       # Force shutdown the VM
+sudo virsh undefine --remove-all-storage $VM_NAME      # Remove the VM from libvirt
+sudo virsh list --all
+
+terraform state rm module.vm.libvirt_domain.this_domain
+terraform destroy -auto-approve
+```
+
+### Solving Could not open '/var/lib/libvirt/images/<FILE_NAME>': Permission denied
+The [Issue link](https://github.com/dmacvicar/terraform-provider-libvirt/commit/22f096d9)
+
+A quick solution is to disable QEMU default security driver.
+
+```bash
+$ sudo nano /etc/libvirt/qemu.conf
+security_driver = "none"
+```
+
+Then restart `libvirtd` service after making the changes:
+
+```bash
+sudo systemctl restart libvirtd
+```
