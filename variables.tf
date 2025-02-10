@@ -48,7 +48,7 @@ variable "os_version" {
   default     = "latest"
 }
 
-variable "custom_image_url" {
+variable "custom_image_path_url" {
   description = "Path to locally cached image or remote URL"
   type        = string
   default     = ""

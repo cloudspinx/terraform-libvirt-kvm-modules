@@ -65,7 +65,7 @@ resource "libvirt_pool" "default" {
 
 # OS Image creation section
 module "os_image" {
-  count      = var.custom_image_url == "" ? 1 : 0
+  count      = var.custom_image_path_url == "" ? 1 : 0
   source     = "./modules/os-images"
   os_name    = var.os_name
   os_version = var.os_version
@@ -140,7 +140,7 @@ resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
   name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
   pool   = var.create_default_pool ? libvirt_pool.default[0].name : var.storage_pool
-  source = var.custom_image_url == "" ? module.os_image[0].url : var.custom_image_url
+  source = var.custom_image_path_url == "" ? module.os_image[0].url : var.custom_image_path_url
   format = "qcow2"
   depends_on = [libvirt_pool.default]
 }
