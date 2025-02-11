@@ -108,24 +108,7 @@ variable "graphics" {
   }
 }
 
-# Storage variables
-variable "create_default_pool" {
-  description = "Create a default storage pool"
-  type        = bool
-  default     = false
-}
-
-variable "default_pool_path" {
-  description = "The path to the default storage pool"
-  type        = string
-  default     = "/var/lib/libvirt/images"
-}
-
-variable "storage_pool" {
-  description = "The storage pool to use for instance volumes"
-  type        = string
-  default     = "default"
-}
+# VM Storage variables
 
 variable "os_disk_size" {
   description = "OS disk size (in GB)"
@@ -220,7 +203,7 @@ variable "use_dhcp" {
 variable "vm_ip_address" {
   description = "List of IP addresses for the instance"
   type        = list(string)
-  default     = ["192.168.122.101"]
+  default     = ["192.168.122.101/24"]
 }
 
 variable "vm_ip_gateway" {
@@ -232,7 +215,7 @@ variable "vm_ip_gateway" {
   variable "vm_dns_servers" {
   description = "List of DNS servers"
   type        = list(string)
-  default     = ["192.168.122.1"]
+  default     = ["8.8.8.8","1.1.1.1"]
 }
 
 # Cloud-init variables
