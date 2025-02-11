@@ -32,11 +32,6 @@ variable "network_cidr" {
   description = "List of CIDR addresses for the network"
   type        = list(string)
   default     = ["172.21.0.0/24"]
-
-  validation {
-    condition     = alltrue([for cidr in var.addresses : can(cidrnetmask(cidr))])
-    error_message = "Each element in 'addresses' must be a valid CIDR block."
-  }
 }
 
 variable "network_dhcp_enabled" {
