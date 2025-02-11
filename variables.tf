@@ -73,12 +73,6 @@ variable "custom_image_path_url" {
   default     = ""
 }
 
-variable "os_img_url" {
-  description = "The URL of the OS cloud image to use as base for the instance"
-  type        = string
-  default     = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
 variable "vm_autostart" {
   description = "Whether the instance should start automatically"
   type        = bool
