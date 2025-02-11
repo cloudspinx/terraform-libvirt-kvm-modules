@@ -168,7 +168,7 @@ Creating libvirt network using terraform
 
 ```hcl
 module "libvirt_network" {
-  # Remove cidr and mtu.
+  # Note that cidr and mtu are missing. This is often managed externally in bridged networks - network switch / router.
   source            = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/libvirt-network?ref=main"
   create_network    = true
   network_name      = "br0"     # Good to use same name as bridge name
