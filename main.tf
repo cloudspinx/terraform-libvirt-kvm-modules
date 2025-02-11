@@ -190,7 +190,7 @@ resource "libvirt_domain" "this_domain" {
 
   network_interface {
     #bridge         = var.bridge_name
-    network_name   = var.create_network ? module.network[0].network_name
+    network_name   = module.network[0].network_name
     wait_for_lease = true
     hostname       = format("${var.vm_hostname_prefix}%02d", count.index + var.index_start)
   }
