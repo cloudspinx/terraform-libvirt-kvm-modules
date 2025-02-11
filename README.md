@@ -268,7 +268,7 @@ custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-ser
 
 The root of this repository is the domain creation module.
 
-This module relies on the following Terraform resources:
+This module relies on the following extra terraform resources:
 
 | Resource Name            | Description |
 |--------------------------|-------------|
