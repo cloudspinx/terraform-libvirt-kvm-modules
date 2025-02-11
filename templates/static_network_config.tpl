@@ -2,10 +2,10 @@ version: 2
 ethernets:
   ${nic}:
     dhcp4: no
-    addresses: [${ip_address}/24]
-    gateway4: ${gateway}
+    addresses: [${vm_ip_address}]
+    gateway4: ${vm_ip_gateway}
     nameservers:
        addresses:
-        - ${ip_nameserver}
-        - 8.8.8.8
-        - 1.1.1.1
+       %{~ for dns_server in vm_dns_servers ~}
+       - ${dns_server}
+       %{~ endfor ~}
