@@ -36,7 +36,7 @@ We provide a [storage sub-module](https://github.com/cloudspinx/terraform-libvir
 | `pool_id` | The ID of the created Libvirt storage pool  |
 | `name`    | The name of the created Libvirt storage pool |
 
-You can create a tf file `storage/main.tf`:
+Usage example:
 
 ```hcl
 terraform {
