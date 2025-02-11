@@ -1,4 +1,4 @@
-# Terraform modules to create network, storage pool, and libvirt domains
+# Terraform modules to create libvirt storage pools, networks, and vm domains
 
 This repository contains Terraform module for managing KVM resources.
 
