@@ -8,14 +8,13 @@ The following are the main requirements for using the module to create instances
 - [Terraform](https://developer.hashicorp.com/terraform/install) or [OpenTofu](https://opentofu.org/docs/intro/install/)
 - [Libvirt provider](https://github.com/dmacvicar/terraform-provider-libvirt)
 
-All terraform providers Used:
+All terraform providers used:
 
 - libvirt (source: dmacvicar/libvirt)
 - random (source: hashicorp/random)
 - tls (source: hashicorp/tls)
 - local (source: hashicorp/local)
 - template (source: hashicorp/template)
-
 
 ## Libvirt storage pool module
 
@@ -82,7 +81,7 @@ Confirm creation:
 
 ## Libvirt network module
 
-The [network sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/storage-pool) allows you to create and destroy libvirt networks.
+The [network sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/libvirt-network) allows you to create and destroy libvirt networks.
 
 ### Inputs
 
