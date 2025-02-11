@@ -1,0 +1,13 @@
+name: Terraform Linting
+on: [push, pull_request]
+
+jobs:
+  terraform_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@main
+
+      - name: Run Terraform Linter
+        uses: devops-infra/action-tflint@master
