@@ -20,7 +20,7 @@ module "network" {
   network_bridge       = var.network_bridge
   network_mtu          = var.network_mtu
   network_dhcp_enabled = var.network_dhcp_enabled
-  network_cidr         = var.network_mode
+  network_cidr         = var.network_cidr
 }
 
 # OS Image creation (sub-module)
