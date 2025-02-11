@@ -154,7 +154,7 @@ Validate:
 # virsh net-dumpxml private
 ```
 
-### Create libvirt network that use pre-existing host bridge
+### Example 2: Create libvirt network on existing host bridge
 
 List configured bridge(s) on the host:
 
