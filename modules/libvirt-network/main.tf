@@ -1,7 +1,7 @@
 resource "libvirt_network" "this" {
   name      = var.network_name
   mode      = var.network_mode
-  mtu       = var.network_mode != "bridge" : var.network_mtu ? null
+  mtu       = var.network_mode != "bridge" ? var.network_mtu : null
   autostart = var.network_autostart
   addresses = var.network_cidr
 
