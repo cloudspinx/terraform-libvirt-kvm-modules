@@ -17,11 +17,11 @@ All terraform providers Used:
 - template (source: hashicorp/template)
 
 
-### Storage Pool Creation
+## Libvirt storage pool module
 
 We provide a [storage sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-module/tree/main/modules/storage-pool) in the repository that can be used to create storage pools independently.
 
-#### Inputs
+### Inputs
 
 | Name                | Description                                      | Type    | Default                  |
 |---------------------|--------------------------------------------------|--------|--------------------------|
@@ -29,7 +29,7 @@ We provide a [storage sub-module](https://github.com/cloudspinx/terraform-libvir
 | `create_storage_pool` | Whether to create the storage Libvirt storage pool | bool   | `true`                   |
 | `storage_pool_path` | The path where the storage Libvirt pool will be stored | string | `"/var/lib/libvirt/images"` |
 
-#### Outputs
+### Outputs
 
 | Name     | Description                                   |
 |----------|-----------------------------------------------|
@@ -80,9 +80,11 @@ Confirm creation:
  vms_pool   active   yes
 ```
 
-### Network creation
+## Libvirt network module
 
-#### Inputs
+The [network sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/storage-pool) allows you to create and destroy libvirt networks.
+
+### Inputs
 
 | Name                  | Description                                 | Type         | Default                 |
 |-----------------------|---------------------------------------------|-------------|-------------------------|
@@ -95,14 +97,14 @@ Confirm creation:
 | `network_cidr`       | List of CIDR addresses for the network     | list(string) | `["172.21.0.0/24"]`     |
 | `network_dhcp_enabled` | Whether DHCP is enabled for the network   | bool        | `true`                  |
 
-#### Outputs
+### Outputs
 
 | Name         | Description                          |
 |-------------|--------------------------------------|
 | `network_id` | The ID of the created libvirt network |
 | `name`       | The name of the libvirt network      |
 
-#### Example 1: Create nat libvirt network
+### Example 1: Create nat libvirt network
 
 This example creates nat libvirt network:
 
@@ -152,7 +154,7 @@ Validate:
 # virsh net-dumpxml private
 ```
 
-#### Create libvirt network that use pre-existing host bridge
+### Create libvirt network that use pre-existing host bridge
 
 List configured bridge(s) on the host:
 
@@ -185,18 +187,21 @@ terraform apply
 virsh net-list
 ```
 
-### Managing Cloud Image Sources  
+## Cloud images module
 
-To streamline instance creation, this module provides two options for sourcing cloud images:  
+To streamline instance creation, we created a [cloud images management module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules)
 
-#### 1. Automatic Image Download (Default)  
+### 1. Automatic image download (Default) - using the module
+
 - Users can specify `os_name`, and optionally a `version`.  
 - If `version` is not provided, the latest available version is used.  
 - Terraform will automatically download the required cloud image during provisioning.
 
 Table of images populated into sub-module: `modules/os-images`:
 
-##### Supported OS Images
+#### Supported OS Images
+
+If version is not specified, it will default to using the latest version for that os.
 
 | **OS Name**       | **Version** | **Latest Version(Default choice)** |
 |-------------------|------------|--------------------|
@@ -232,7 +237,8 @@ Table of images populated into sub-module: `modules/os-images`:
 |                 | 13         |                    |
 
 
-#### 2. Cached Image Approach (Recommended for Faster Deployments)  
+#### 2. Cached Image Approach (Recommended for slow networks)  
+
 - Instead of downloading the image every time, users can pre-cache frequently used images locally.  
 - The module allows specifying a local path for the image, bypassing the need for downloads.  
 - This approach is particularly useful in development environments where instances are frequently created and destroyed. Or if bandwidth is an issue.
@@ -251,7 +257,12 @@ The `custom_image_path_url` can also be used to specify remote custom link to a 
 
 ```bash
 # Example
-custom_image_path_url = "/home/os-images/ubuntu-latest.qcow2"
+custom_image_path_url = "file:///home/os-images/ubuntu-latest.qcow2"
+```
+
+The `custom_image_path_url` can also be used to specify custom image URL:
+```bash
+custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 ```
 
 ### Creating `main.tf` file
