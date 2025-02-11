@@ -266,7 +266,9 @@ custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-ser
 
 ## Libvirt domains module
 
-The root of this repository is the domain creation module.
+The root of this repository is the domain creation module. The module provides an automated way to deploy virtual machines (VMs) using Libvirt. It includes configurable options for storage, networking, cloud-init, and other VM settings.
+
+### Other dependent resources
 
 This module relies on the following extra terraform resources:
 
@@ -282,6 +284,105 @@ This module relies on the following extra terraform resources:
 | `local_file.ssh_public_key` | Saves the public SSH key to a file if `generate_ssh_keys` is enabled. |
 
 Each resource is conditionally created based on module variables to provide flexibility.
+
+### Inputs
+
+#### Storage Pool Variables
+
+| Variable              | Description                                            | Type     | Default                   |
+| --------------------- | ------------------------------------------------------ | -------- | ------------------------- |
+| `create_storage_pool` | Whether to create the Libvirt storage pool             | `bool`   | `false`                   |
+| `storage_pool_name`   | The name of the Libvirt storage pool                   | `string` | `vms_storage`             |
+| `storage_pool_path`   | The path where the Libvirt storage pool will be stored | `string` | `/var/lib/libvirt/images` |
+
+#### Domain Variables
+
+| Variable                | Description                                                             | Type     | Default            |
+| ----------------------- | ----------------------------------------------------------------------- | -------- | ------------------ |
+| `vm_hostname_prefix`    | The prefix for the VM name                                              | `string` | `vm`               |
+| `vm_domain`             | The VM's domain that forms the FQDN                                     | `string` | `example.com`      |
+| `vcpu`                  | The number of vCPUs for the instance                                    | `number` | `1`                |
+| `cpu_mode`              | The CPU mode for the instance                                           | `string` | `host-passthrough` |
+| `memory`                | The amount of memory for the instance (in MB)                           | `string` | `1024`             |
+| `base_volume_name`      | Name of the base OS image                                               | `string` | `null`             |
+| `os_name`               | The name of the OS to use                                               | `string` | `ubuntu`           |
+| `os_version`            | The version of the OS to use                                            | `string` | `latest`           |
+| `custom_image_path_url` | Path to locally cached image or remote URL                              | `string` | `""`               |
+| `vm_autostart`          | Whether the instance should start automatically                         | `bool`   | `true`             |
+| `vm_count`              | The number of VMs to create                                             | `number` | `1`                |
+| `index_start`           | The starting index for the VMs                                          | `number` | `1`                |
+| `graphics`              | Graphics type for instance installation (Valid: `spice`, `vnc`, `none`) | `string` | `none`             |
+
+#### VM Storage Variables
+
+| Variable              | Description                     | Type           | Default                                                       |
+| --------------------- | ------------------------------- | -------------- | ------------------------------------------------------------- |
+| `os_disk_size`        | OS disk size (in GB)            | `number`       | `10`                                                          |
+| `additional_disk_ids` | List of volume IDs              | `list(string)` | `[]`                                                          |
+| `share_filesystem`    | Shared filesystem configuration | `object`       | `{ source: null, target: null, readonly: false, mode: null }` |
+
+#### Network Variables
+
+| Variable               | Description                             | Type           | Default                  |
+| ---------------------- | --------------------------------------- | -------------- | ------------------------ |
+| `create_network`       | Whether to create the Libvirt network   | `bool`         | `false`                  |
+| `network_name`         | The name of the Libvirt network         | `string`       | `default`                |
+| `network_bridge`       | The bridge device for the network       | `string`       | `virbr10`                |
+| `network_mode`         | The network mode (`nat`, `bridge`)      | `string`       | `nat`                    |
+| `network_mtu`          | The MTU for the network                 | `number`       | `1500`                   |
+| `network_autostart`    | Whether the network should autostart    | `bool`         | `true`                   |
+| `network_cidr`         | List of CIDR addresses for the network  | `list(string)` | `["172.21.0.0/24"]`      |
+| `network_dhcp_enabled` | Whether DHCP is enabled for the network | `bool`         | `true`                   |
+| `use_dhcp`             | Whether to use DHCP or Static IP        | `bool`         | `true`                   |
+| `vm_ip_address`        | List of IP addresses for the instance   | `list(string)` | `["192.168.122.101/24"]` |
+| `vm_ip_gateway`        | The IP address of the gateway           | `string`       | `192.168.122.1`          |
+| `vm_dns_servers`       | List of DNS servers                     | `list(string)` | `["8.8.8.8", "1.1.1.1"]` |
+
+#### Cloud-Init Variables
+
+| Variable                    | Description                             | Type           | Default                                                                       |
+| --------------------------- | --------------------------------------- | -------------- | ----------------------------------------------------------------------------- |
+| `package_update`            | Update the package list                 | `bool`         | `true`                                                                        |
+| `preserve_hostname`         | Preserve the hostname of the instance   | `bool`         | `false`                                                                       |
+| `manage_etc_hosts`          | Manage the `/etc/hosts` file            | `bool`         | `true`                                                                        |
+| `create_hostname_file`      | Create a hostname file for the instance | `bool`         | `true`                                                                        |
+| `prefer_fqdn_over_hostname` | Prefer FQDN over hostname               | `bool`         | `true`                                                                        |
+| `enable_ssh_pwauth`         | Enable SSH password authentication      | `bool`         | `false`                                                                       |
+| `disable_root_login`        | Disable root user login                 | `bool`         | `true`                                                                        |
+| `lock_root_user_password`   | Lock root user password                 | `bool`         | `true`                                                                        |
+| `enable_root_password`      | Enable root password                    | `bool`         | `false`                                                                       |
+| `set_user_password`         | Enable setting a user password          | `bool`         | `true`                                                                        |
+| `ssh_user_name`             | Admin username for the instance         | `string`       | `cloud`                                                                       |
+| `ssh_user_fullname`         | Full name of the admin user             | `string`       | `Cloud Admin`                                                                 |
+| `ssh_user_shell`            | Shell for the admin user                | `string`       | `/bin/bash`                                                                   |
+| `generate_ssh_keys`         | Generate SSH keys for the instance      | `bool`         | `true`                                                                        |
+| `timezone`                  | Time Zone                               | `string`       | `UTC`                                                                         |
+| `packages`                  | Extra packages to install               | `list(string)` | `["qemu-guest-agent", "vim", "wget", "curl", "unzip", "git"]`                 |
+| `runcmds`                   | Extra cloud-init commands               | `list(string)` | `["[ systemctl, daemon-reload ]", "[ systemctl, enable, qemu-guest-agent ]"]` |
+| `ssh_private_key`           | Path to SSH private key                 | `string`       | `~/.ssh/id_rsa`                                                               |
+| `ssh_public_key`            | Path to SSH public key                  | `string`       | `~/.ssh/id_rsa.pub`                                                           |
+| `ssh_keys`                  | List of public SSH keys to add          | `list(string)` | `[]`                                                                          |
+| `disable_ipv6`              | Disable IPv6 on the instance            | `bool`         | `false`                                                                       |
+
+#### Bastion Variables (For Air-Gapped Environments)
+
+| Variable       | Description                      | Type     | Default |
+| -------------- | -------------------------------- | -------- | ------- |
+| `bastion_host` | Bastion host for SSH connections | `string` | `""`    |
+| `bastion_user` | SSH user for the bastion host    | `string` | `""`    |
+
+
+### Outputs
+
+| Output Name | Description | Sensitive |
+| --- | --- | --- |
+| `ssh_user_name` | The SSH username for connecting to the VMs | No  |
+| `root_password` | The root password (if set) | Yes |
+| `user_password` | The user password (if set) | Yes |
+| `all_vm_ips` | A map of VM names to their assigned IP addresses | No  |
+| `ssh_commands` | SSH connection commands for each VM | No  |
+
+### Usage
 
 In your `main.tf` file define required providers and initialize.
 
