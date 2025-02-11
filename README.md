@@ -129,7 +129,7 @@ module "libvirt_network" {
   network_name      = "private"
   network_mode      = "nat"
   network_mtu       = 1500
-  network_cidr      = "[172.24.30.0/24"]
+  network_cidr      = ["172.24.30.0/24"]
   network_autostart = true
 }
 ```
@@ -268,6 +268,21 @@ custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-ser
 
 The root of this repository is the domain creation module.
 
+This module relies on the following Terraform resources:
+
+| Resource Name            | Description |
+|--------------------------|-------------|
+| `random_password.root_password` | Generates a random root password if `set_root_password` is enabled. |
+| `random_password.user_password` | Generates a random user password if `set_user_password` is enabled. |
+| `random_id.uuid` | Generates a unique identifier prefixed with the OS name and version. |
+| `tls_private_key.ssh_key` | Creates an RSA SSH key pair if `generate_ssh_keys` is enabled. |
+| `local_file.root_password` | Stores the generated root password in a local file if `set_root_password` is enabled. |
+| `local_file.user_password` | Stores the generated user password in a local file if `set_user_password` is enabled. |
+| `local_file.ssh_private_key` | Saves the private SSH key to a file if `generate_ssh_keys` is enabled. |
+| `local_file.ssh_public_key` | Saves the public SSH key to a file if `generate_ssh_keys` is enabled. |
+
+Each resource is conditionally created based on module variables to provide flexibility.
+
 In your `main.tf` file define required providers and initialize.
 
 ```hcl
@@ -332,15 +347,14 @@ module "vm" {
   vm_count            = 1
   memory              = "2048"
   vcpu                = 1
-  storage_pool        = "default"
   os_disk_size        = 20
   timezone            = "Africa/Nairobi"
-  
+
   # Network sub-module
   create_network      = true
-  network_name        = private
-  network_mode        = nat
-  addresses           = ["192.168.20.0/24"]
+  network_name        = "private"
+  network_mode        = "nat"
+  network_cidr        = ["192.168.20.0/24"]
 
   # Storage pool
   create_storage_pool = true
@@ -359,6 +373,26 @@ output "ssh_commands" {
 output "all_vm_ips" {
   value = module.vm.all_vm_ips
 }
+```
+
+In the output you will get the ssh commands into the created vm.
+
+```bash
+Apply complete! Resources: 12 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+all_vm_ips = {
+  "webserver01" = "192.168.20.216"
+}
+ssh_commands = {
+  "webserver01" = "ssh -i /root/tf/sshkey.priv cloud@192.168.20.216"
+}
+ssh_username = "cloud"
+```
+Test ssh
+```bash
+ssh -i /root/tf/sshkey.priv cloud@192.168.20.216
 ```
 
 
