@@ -5,5 +5,5 @@ output "network_id" {
 
 output "name" {
   description = "The name of the libvirt network"
-  value       = libvirt_network.this.name
+  value       = libvirt_network.this[0].name
 }
