@@ -17,22 +17,172 @@ All terraform providers Used:
 - template (source: hashicorp/template)
 
 
-## Preparation
+### Storage Pool Creation
 
-### Storage Pool Manual Creation (Optional)
+We provide a [storage sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-module/tree/main/modules/storage-pool) in the repository that can be used to create storage pools independently.
 
-If you want your storage pool to persist beyond Terraform-managed resources, consider **manually** creating the `default` storage pool. Otherwise, let the module handle its creation for you.
+#### Inputs
+
+| Name                | Description                                      | Type    | Default                  |
+|---------------------|--------------------------------------------------|--------|--------------------------|
+| `storage_pool_name` | The name of the storage Libvirt pool             | string | `"vms_storage"`          |
+| `create_storage_pool` | Whether to create the storage Libvirt storage pool | bool   | `true`                   |
+| `storage_pool_path` | The path where the storage Libvirt pool will be stored | string | `"/var/lib/libvirt/images"` |
+
+#### Outputs
+
+| Name     | Description                                   |
+|----------|-----------------------------------------------|
+| `pool_id` | The ID of the created Libvirt storage pool  |
+| `name`    | The name of the created Libvirt storage pool |
+
+You can create a tf file `storage/main.tf`:
+
+```hcl
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    libvirt = {
+        source  = "dmacvicar/libvirt"
+        version = "0.8.1"
+      }
+  }
+}
+
+provider "libvirt" {
+  uri = "qemu:///system"
+  #uri = "qemu+ssh://root@192.168.1.7/system"
+}
+
+module "storage_pool" {
+  source              = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/storage-pool?ref=main"
+  create_storage_pool = true
+  storage_pool_name   = "vms_pool"       # Set to name you want to use
+  storage_pool_path   = "/data/vms_pool" # Path to use for the pool. Make sure not used by another pool `virsh pool-list`
+}
+```
+
+Then create storage pool resource:
 
 ```bash
-sudo virsh pool-list  # Identify available storage pools
-POOL_PATH="/data/vms" # Chaneg to the path you wan to use
-POOL_NAME="default"   # Define the name of default storage pool
-sudo mkdir -p $POOL_PATH
-virsh pool-define-as --name $POOL_NAME --type dir --target $POOL_PATH
-virsh pool-build $POOL_NAME
-virsh pool-start $POOL_NAME
-virsh pool-autostart $POOL_NAME
-virsh pool-list --all
+terraform init
+terraform plan
+terraform apply
+```
+
+Confirm creation:
+
+```bash
+# virsh pool-list
+ Name       State    Autostart
+--------------------------------
+ default    active   yes
+ vms_pool   active   yes
+```
+
+### Network creation
+
+#### Inputs
+
+| Name                  | Description                                 | Type         | Default                 |
+|-----------------------|---------------------------------------------|-------------|-------------------------|
+| `create_network`      | Whether to create the libvirt network      | bool        | `false`                 |
+| `network_name`        | The name of the libvirt network            | string      | `"private"`             |
+| `network_bridge`      | The bridge device for the network          | string      | `"virbr10"`             |
+| `network_mode`        | The network mode (e.g., nat, bridge)       | string      | `"nat"`                 |
+| `network_mtu`        | The MTU for the network                    | number      | `1500`                  |
+| `network_autostart`   | Whether the network should autostart       | bool        | `true`                  |
+| `network_cidr`       | List of CIDR addresses for the network     | list(string) | `["172.21.0.0/24"]`     |
+| `network_dhcp_enabled` | Whether DHCP is enabled for the network   | bool        | `true`                  |
+
+#### Outputs
+
+| Name         | Description                          |
+|-------------|--------------------------------------|
+| `network_id` | The ID of the created libvirt network |
+| `name`       | The name of the libvirt network      |
+
+#### Example 1: Create nat libvirt network
+
+This example creates nat libvirt network:
+
+```hcl
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    libvirt = {
+        source  = "dmacvicar/libvirt"
+        version = "0.8.1"
+      }
+  }
+}
+
+provider "libvirt" {
+  uri = "qemu:///system"
+  #uri = "qemu+ssh://root@192.168.1.7/system"
+}
+
+module "libvirt_network" {
+  source            = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/libvirt-network?ref=main"
+  create_network    = true
+  network_name      = "private"
+  network_mode      = "nat"
+  network_mtu       = 1500
+  network_cidr      = "[172.24.30.0/24"]
+  network_autostart = true
+}
+```
+
+Run terraform commands to create network:
+
+```bash
+terraform init
+terraform apply
+```
+
+Validate:
+
+```bash
+# virsh  net-list
+ Name      State    Autostart   Persistent
+--------------------------------------------
+ default   active   yes         yes
+ private   active   yes         yes
+
+# virsh net-dumpxml private
+```
+
+#### Create libvirt network that use pre-existing host bridge
+
+List configured bridge(s) on the host:
+
+```bash
+# brctl show
+bridge name	bridge id		STP enabled	interfaces
+br0		8000.22d1dfd71e10	no		enp89s0
+```
+
+Creating libvirt network using terraform
+
+```hcl
+module "libvirt_network" {
+  # Remove cidr and mtu.
+  source            = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/libvirt-network?ref=main"
+  create_network    = true
+  network_name      = "br0"     # Good to use same name as bridge name
+  network_mode      = "bridge"  # Set network mode to bridge
+  network_bridge    = "br0"     # Name of host bridge to use
+  network_autostart = true
+}
+```
+
+Create and confirm:
+
+```bash
+terraform plan
+terraform init -upgrade
+terraform apply
+virsh net-list
 ```
 
 ### Managing Cloud Image Sources  
