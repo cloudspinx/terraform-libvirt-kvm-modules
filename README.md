@@ -359,8 +359,6 @@ Each resource is conditionally created based on module variables to provide flex
 | `timezone`                  | Time Zone                               | `string`       | `UTC`                                                                         |
 | `packages`                  | Extra packages to install               | `list(string)` | `["qemu-guest-agent", "vim", "wget", "curl", "unzip", "git"]`                 |
 | `runcmds`                   | Extra cloud-init commands               | `list(string)` | `["[ systemctl, daemon-reload ]", "[ systemctl, enable, qemu-guest-agent ]"]` |
-| `ssh_private_key`           | Path to SSH private key                 | `string`       | `~/.ssh/id_rsa`                                                               |
-| `ssh_public_key`            | Path to SSH public key                  | `string`       | `~/.ssh/id_rsa.pub`                                                           |
 | `ssh_keys`                  | List of public SSH keys to add          | `list(string)` | `[]`                                                                          |
 | `disable_ipv6`              | Disable IPv6 on the instance            | `bool`         | `false`                                                                       |
 
