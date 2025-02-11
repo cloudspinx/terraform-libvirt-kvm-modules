@@ -1,3 +1,9 @@
+variable "create_network" {
+  description = "Whether to create the libvirt network"
+  type        = bool
+  default     = false
+}
+
 variable "network_name" {
   description = "The name of the libvirt network"
   type        = string

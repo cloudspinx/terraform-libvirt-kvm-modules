@@ -1,4 +1,5 @@
 resource "libvirt_network" "this" {
+  count     = var.create_network ? 1 : 0
   name      = var.network_name
   autostart = var.network_autostart
   mode      = var.network_mode
