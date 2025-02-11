@@ -12,15 +12,15 @@ module "storage_pool" {
 
 # Network creation (sub-module)
 module "network" {
-  count        = var.create_network ? 1 : 0
-  source       = "./modules/libvirt-network"
-  network_name = var.network_name
-  autostart    = var.network_autostart
-  mode         = var.network_mode
-  bridge       = var.network_mode == "bridge" ? var.network_bridge : null
-  mtu          = var.network_mode != "bridge" ? var.network_mtu : null
-  dhcp_enabled = var.network_mode != "bridge" ? var.network_dhcp_enabled : false
-  addresses    = var.network_mode != "bridge" ? var.network_cidr : null
+  count                = var.create_network ? 1 : 0
+  source               = "./modules/libvirt-network"
+  network_name         = var.network_name
+  network_autostart    = var.network_autostart
+  network_mode         = var.network_mode
+  network_bridge       = var.network_mode == "bridge" ? var.network_bridge : null
+  network_mtu          = var.network_mode != "bridge" ? var.network_mtu : null
+  network_dhcp_enabled = var.network_mode != "bridge" ? var.network_dhcp_enabled : false
+  network_cidr         = var.network_mode != "bridge" ? var.network_cidr : null
 }
 
 # OS Image creation (sub-module)
