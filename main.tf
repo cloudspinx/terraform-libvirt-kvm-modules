@@ -15,12 +15,12 @@ module "network" {
   count        = var.create_network ? 1 : 0
   source       = "./modules/libvirt-network"
   network_name = var.network_name
-  bridge       = var.bridge_name
-  mode         = var.network_mode
-  mtu          = var.network_mtu
   autostart    = var.network_autostart
-  dhcp_enabled = var.network_dhcp_enabled
-  addresses    = var.network_cidr
+  mode         = var.network_mode
+  bridge       = var.network_mode == "bridge" ? var.network_bridge : null
+  mtu          = var.network_mode != "bridge" ? var.network_mtu : null
+  dhcp_enabled = var.network_mode != "bridge" ? var.network_dhcp_enabled : false
+  addresses    = var.network_mode != "bridge" ? var.network_cidr : null
 }
 
 # OS Image creation (sub-module)

@@ -264,9 +264,11 @@ The `custom_image_path_url` can also be used to specify custom image URL:
 custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 ```
 
-### Creating `main.tf` file
+## Libvirt domains module
 
-In your `main.tf` file define required providers and ini
+The root of this repository is the domain creation module.
+
+In your `main.tf` file define required providers and initialize.
 
 ```hcl
 terraform {
@@ -285,8 +287,7 @@ provider "libvirt" {
 }
 ```
 
-
-Identify available storage pools:
+If you're not using Terraform to create storage pools, list the available ones on your KVM host.
 
 ```bash
 $ virsh pool-list
@@ -297,7 +298,7 @@ $ virsh pool-list
  virt-lightning   active   no
 ```
 
-Identify available libvirt networks:
+If you're using pre-created libvirt networks, list the available ones on your KVM host.
 
 ```bash
 $ virsh net-list
@@ -306,51 +307,60 @@ $ virsh net-list
  default   active   yes         yes
 ```
 
-### Libvirt Network Sub-Module
-
-This Terraform sub-module creates and manages a Libvirt network with configurable options such as mode, DHCP, MTU, and bridge settings.
-
-#### Usage
+### Example 1: Create storage pool, network and single Ubuntu 24.04 instance with sub-modules
 
 ```hcl
-module "libvirt_network" {
-  source = "./modules/libvirt-network"
+terraform {
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+    }
+  }
+}
 
-  network_name  = "private_net"
-  bridge        = "virbr20"
-  mode          = "nat"
-  mtu           = 1400
-  autostart     = true
-  addresses     = ["192.168.100.0/24"]
-  dhcp_enabled  = true
+# instance the provider
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
+module "vm" {
+  source              = "git::https://github.com/cloudspinx/terraform-kvm-modules.git?ref=main"
+  vm_hostname_prefix  = "webserver"
+  vm_domain           = "mylab.net"
+  os_name             = "ubuntu"
+  os_version          = "24.04"
+  vm_count            = 1
+  memory              = "2048"
+  vcpu                = 1
+  storage_pool        = "default"
+  os_disk_size        = 20
+  timezone            = "Africa/Nairobi"
+  
+  # Network sub-module
+  create_network      = true
+  network_name        = private
+  network_mode        = nat
+  addresses           = ["192.168.20.0/24"]
+
+  # Storage pool
+  create_storage_pool = true
+  storage_pool_name   = "instances_pool"
+  storage_pool_path   = "/mnt/vms_data"
+}
+
+output "ssh_username" {
+  value = module.vm.ssh_user_name
+}
+
+output "ssh_commands" {
+  value = module.vm.ssh_commands
+}
+
+output "all_vm_ips" {
+  value = module.vm.all_vm_ips
 }
 ```
 
-#### Inputs
-
-| Name           | Description                            | Type           | Default             |
-| -------------- | -------------------------------------- | -------------- | ------------------- |
-| `network_name` | The name of the Libvirt network        | `string`       | "private"           |
-| `bridge`       | The bridge device for the network      | `string`       | "virbr10"           |
-| `mode`         | The network mode (`nat`, `bridge`)     | `string`       | "nat"               |
-| `mtu`          | The MTU for the network                | `number`       | `1500`              |
-| `autostart`    | Whether the network should autostart   | `bool`         | `true`              |
-| `addresses`    | List of CIDR addresses for the network | `list(string)` | `["172.21.0.0/24"]` |
-| `dhcp_enabled` | Whether DHCP is enabled for NAT mode   | `bool`         | `true`              |
-
-#### Outputs
-
-| Name         | Description                           |
-| ------------ | ------------------------------------- |
-| `network_id` | The ID of the created Libvirt network |
-
-
-
-
-#### Notes
-- **Bridge mode** requires setting a valid bridge name in bridge.
-- **NAT mode** supports DHCP, which can be enabled or disabled using dhcp_enabled.
-- **Validation** ensures addresses contain valid CIDR blocks.
 
 ## Tips and Tricks
 
