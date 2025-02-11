@@ -1,3 +1,40 @@
+##########################################
+# Livirt Sub-modules section
+#########################################
+
+# Storage Pool creation (sub-module)
+module "storage_pool" {
+  count               = var.create_storage_pool ? 1 : 0
+  source              = "./modules/storage-pool"
+  storage_pool_name   = var.storage_pool_name
+  storage_pool_path   = var.storage_pool_path
+}
+
+# Network creation (sub-module)
+module "network" {
+  count        = var.create_network ? 1 : 0
+  source       = "./modules/libvirt-network"
+  network_name = var.network_name
+  bridge       = var.bridge_name
+  mode         = var.network_mode
+  mtu          = var.network_mtu
+  autostart    = var.network_autostart
+  dhcp_enabled = var.network_dhcp_enabled
+  addresses    = var.network_cidr
+}
+
+# OS Image creation (sub-module)
+module "os_image" {
+  count      = var.custom_image_path_url == "" ? 1 : 0
+  source     = "./modules/os-images"
+  os_name    = var.os_name
+  os_version = var.os_version
+}
+
+##########################################
+# Main section
+#########################################
+
 # Random resource creation section
 resource "random_password" "root_password" {
   count            = var.set_root_password ? 1 : 0
@@ -24,7 +61,7 @@ resource "tls_private_key" "ssh_key" {
   rsa_bits  = 4096
 }
 
-# File creation section
+# Files creation section
 resource "local_file" "root_password" {
   count           = var.set_root_password ? 1 : 0
   content         = random_password.root_password[0].result
@@ -51,24 +88,6 @@ resource "local_file" "ssh_public_key" {
   content         = tls_private_key.ssh_key[0].public_key_openssh
   filename        = "${path.cwd}/sshkey.pub"
   file_permission = "0600"
-}
-
-# Storage Pool creation section
-resource "libvirt_pool" "default" {
-  count = var.create_default_pool ? 1 : 0
-  name = "default"
-  type = "dir"
-  target {
-    path = var.default_pool_path
-  }
-}
-
-# OS Image creation section
-module "os_image" {
-  count      = var.custom_image_path_url == "" ? 1 : 0
-  source     = "./modules/os-images"
-  os_name    = var.os_name
-  os_version = var.os_version
 }
 
 # Cloud-init configuration section
@@ -120,10 +139,10 @@ data "template_cloudinit_config" "network" {
     content_type = "text/cloud-config"
     content      = templatefile("${path.module}/templates/${var.use_dhcp == true ? "dhcp" : "static"}_network_config.tpl",
     {
-      ip_address    = element(var.ip_address, count.index)
-      ip_gateway    = var.ip_gateway
-      ip_nameserver = var.dns_servers
-      nic           = (var.share_filesystem.source == null ? "ens3" : "ens4")
+      vm_ip_address    = element(var.vm_ip_address, count.index)
+      vm_ip_gateway    = var.vm_ip_gateway
+      vm_dns_servers   = var.vm_dns_servers
+      nic              = (var.share_filesystem.source == null ? "ens3" : "ens4")
     })
   }
 }
@@ -139,22 +158,20 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 resource "libvirt_volume" "base_image" {
   count  = var.base_volume_name != null ? 0 : 1
   name   = format("${var.vm_hostname_prefix}-base-image.qcow2")
-  pool   = var.create_default_pool ? libvirt_pool.default[0].name : var.storage_pool
+  pool   = var.create_storage_pool ? module.storage_pool[0].name : var.storage_pool_name
   source = var.custom_image_path_url == "" ? module.os_image[0].url : var.custom_image_path_url
   format = "qcow2"
-  depends_on = [libvirt_pool.default]
 }
 
 resource "libvirt_volume" "vm_disk_qcow2" {
   count            = var.vm_count
   name             = format("${var.vm_hostname_prefix}%02d.qcow2", count.index + var.index_start)
-  pool             = var.storage_pool
+  pool             = var.storage_pool_name
   size             = 1024 * 1024 * 1024 * var.os_disk_size
   base_volume_id   = var.base_volume_name != null ? null : element(libvirt_volume.base_image, 0).id
   base_volume_name = var.base_volume_name
-  base_volume_pool = var.create_default_pool ? libvirt_pool.default[0].name : var.storage_pool
+  base_volume_pool = var.create_storage_pool ? module.storage_pool[0].name : var.storage_pool_name
   format           = "qcow2"
-  depends_on       = [libvirt_pool.default]
 }
 
 # Domains creation section
@@ -166,7 +183,7 @@ resource "libvirt_domain" "this_domain" {
     mode = var.cpu_mode
   }
   vcpu       = var.vcpu
-  autostart  = var.autostart
+  autostart  = var.vm_autostart
   qemu_agent = true
 
   cloudinit = element(libvirt_cloudinit_disk.commoninit[*].id, count.index)

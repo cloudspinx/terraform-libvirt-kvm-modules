@@ -1,3 +1,22 @@
+# Storage pool variables
+variable "create_storage_pool" {
+  description = "Whether to create the storage Libvirt storage pool"
+  type        = bool
+  default     = false
+}
+
+variable "storage_pool_name" {
+  description = "The name of the storage Libvirt pool"
+  type        = string
+  default     = "vms_storage"
+}
+
+variable "storage_pool_path" {
+  description = "The path where the storage Libvirt pool will be stored"
+  type        = string
+  default     = "/var/lib/libvirt/images"
+}
+
 # Domain variables
 
 variable "vm_hostname_prefix" {
@@ -60,7 +79,7 @@ variable "os_img_url" {
   default     = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }
 
-variable "autostart" {
+variable "vm_autostart" {
   description = "Whether the instance should start automatically"
   type        = bool
   default     = true
@@ -137,42 +156,80 @@ variable "share_filesystem" {
 
 # Networking variables
 
+## Network sub-module variables
+variable "network_name" {
+  description = "The name of the libvirt network"
+  type        = string
+  default     = "default"
+}
+
+variable "network_bridge" {
+  description = "The bridge device for the network"
+  type        = string
+  default     = "virbr10"
+}
+
+variable "network_mode" {
+  description = "The network mode (e.g., nat, bridge)"
+  type        = string
+  default     = "nat"
+}
+
+variable "network_mtu" {
+  description = "The MTU for the network"
+  type        = number
+  default     = 1500
+}
+
+variable "network_autostart" {
+  description = "Whether the network should autostart"
+  type        = bool
+  default     = true
+}
+
+variable "network_cidr" {
+  description = "List of CIDR addresses for the network"
+  type        = list(string)
+  default     = ["172.21.0.0/24"]
+
+  validation {
+    condition     = alltrue([for cidr in var.addresses : can(cidrnetmask(cidr))])
+    error_message = "Each element in 'addresses' must be a valid CIDR block."
+  }
+}
+
+variable "network_dhcp_enabled" {
+  description = "Whether DHCP is enabled for the network"
+  type        = bool
+  default     = true
+}
+
+## Instance network variables
 variable "network_config" {
   description = "A user defined cloudinit network config"
   type        = string
   default     = ""
 }
 
-variable "network_name" {
-  description = "The name of the default network to use for the instance"
-  type        = string
-  default     = "default"
-}
 variable "use_dhcp" {
   description = "Whether to use DHCP or Static IP for the instance"
   type        = bool
   default     = true
 }
 
-variable "bridge_name" {
-  description = "The name of the bridge to use for the instance"
-  type        = string
-  default     = "virbr0"
-}
-
-variable "ip_address" {
+variable "vm_ip_address" {
   description = "List of IP addresses for the instance"
   type        = list(string)
   default     = ["192.168.122.101"]
 }
 
-variable "ip_gateway" {
+variable "vm_ip_gateway" {
   description = "The IP address of the gateway"
   type        = string
   default     = "192.168.122.1"
   }
 
-  variable "dns_servers" {
+  variable "vm_dns_servers" {
   description = "List of DNS servers"
   type        = list(string)
   default     = ["192.168.122.1"]
