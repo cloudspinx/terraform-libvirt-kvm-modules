@@ -189,7 +189,7 @@ virsh net-list
 
 ## Cloud images module
 
-To streamline instance creation, we created a [cloud images management module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules)
+To streamline instance creation, we created a [cloud images management module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/os-images)
 
 ### 1. Automatic image download (Default) - using the module
 
