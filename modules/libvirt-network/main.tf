@@ -5,12 +5,7 @@ resource "libvirt_network" "this" {
   autostart = var.network_autostart
   addresses = var.network_cidr
 
-  dynamic "bridge" {
-    for_each = var.network_mode == "bridge" && var.network_bridge != "" ? [1] : []
-    content {
-      bridge = var.network_bridge
-    }
-  }
+  bridge = var.network_mode == "bridge" ? var.network_bridge : null
 
   dynamic "dhcp" {
     for_each = var.network_mode == "nat" ? [1] : []
