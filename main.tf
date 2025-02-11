@@ -17,10 +17,10 @@ module "network" {
   network_name         = var.network_name
   network_autostart    = var.network_autostart
   network_mode         = var.network_mode
-  network_bridge       = var.network_mode == "bridge" ? var.network_bridge : null
-  network_mtu          = var.network_mode != "bridge" ? var.network_mtu : null
-  network_dhcp_enabled = var.network_mode != "bridge" ? var.network_dhcp_enabled : false
-  network_cidr         = var.network_mode != "bridge" ? var.network_cidr : null
+  network_bridge       = var.network_bridge
+  network_mtu          = var.network_mtu
+  network_dhcp_enabled = var.network_dhcp_enabled
+  network_cidr         = var.network_mode
 }
 
 # OS Image creation (sub-module)
