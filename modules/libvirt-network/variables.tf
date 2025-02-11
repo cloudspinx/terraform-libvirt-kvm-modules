@@ -1,7 +1,7 @@
 variable "create_network" {
   description = "Whether to create the libvirt network"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "network_name" {
