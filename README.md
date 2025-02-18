@@ -501,7 +501,7 @@ ssh -i /root/tf/sshkey.priv cloud@192.168.20.216
 ```bash
 ssh_user_name = "username"
 ```
-- By default ssh keys are saved in your current directory (where main.tf file is created):
+- By default, SSH private and public keys are generated and stored in the current directory (where the `main.tf` file is located). To disable this, set the `generate_ssh_keys` variable to `false`.
 
 ```bash
 $ ls  sshkey*
@@ -509,25 +509,73 @@ sshkey.priv  sshkey.pub
 ```
 The SSH private key is `sshkey.priv` and the ssh public key is `sshkey.pub`. As default, the ssh public key will be added to the cloud user authorized keys list in the VM using cloud-init.
 
-- If the `set_user_password` is set to true, then a random password is generated, set for the user, and its valued saved in:
+- Passing an additional list of SSH public keys to be added:
+
+```bash
+ssh_keys = [
+  "ssh-pubkey-1",
+  "ssh-pubkey-2"
+]
+```
+
+- If `set_user_password` is set to true, a random password is generated, assigned to the user, and saved in user_password.txt:
 
 ```bash
 $ ls user_password.txt
 user_password.txt
 ```
+
 And the same is true for root password if `set_root_password` is true. It will create `root_password.txt`
 
-- To enable ssh password authentication for user and root user (NOT RECOMMENDED) - Use ssh keys to stay secure.
+- To enable ssh password authentication for the `cloud` user (NOT RECOMMENDED) - Use ssh keys to stay secure.
 
-```yaml
-# For root user
-enable_root_password  = true
-set_root_password     = true
-disable_root_login    = false
-# For cloud user
+```bash
+enable_ssh_pwauth     = true
 set_user_password     = true
 set_ssh_user_password = true
-enable_ssh_pwauth     = true
+```
+
+You can also enable root user login, but with ssh keys only.
+
+```bash
+disable_root_login    = false
+```
+
+You will then login using:
+
+```bash
+ssh -i sshkey.priv root@IP
+```
+
+- Customizing default user details:
+
+```bash
+ssh_user_name = "cloud"
+ssh_user_fullname = "Cloud Admin"
+```
+- Setting the default list of packages to install on first boot
+
+```bash
+packages = [
+    "qemu-guest-agent",
+    "vim",
+    "wget",
+    "curl",
+    "unzip",
+    "git",
+    "php"
+  ]
+```
+
+- List of commands to run on first boot
+
+```bash
+runcmds = = [
+    "[ systemctl, daemon-reload ]",
+    "[ systemctl, enable, qemu-guest-agent ]",
+    "[ systemctl, start, qemu-guest-agent ]",
+    "[ systemctl, restart, systemd-networkd ]"
+  ]
 ```
 
 ## Tips and Tricks
