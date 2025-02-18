@@ -235,6 +235,20 @@ If version is not specified, it will default to using the latest version for tha
 | **freebsd**      | latest     | 14                 |
 |                 | 13         |                    |
 
+Usage example:
+
+```bash
+# Ubuntu 24.04 cloud image
+os_name             = "ubuntu"
+os_version          = "24.04"
+
+# AlmaLinux 8 cloud image
+os_name             = "almalinux"
+os_version          = "8"
+
+# If you just provide the os_name, then latest release is used:
+os_name             = "debian"
+```
 
 #### 2. Cached Image Approach (Recommended for slow networks)  
 
@@ -541,7 +555,7 @@ You can also enable root user login, but with ssh keys only.
 disable_root_login    = false
 ```
 
-You will then login using:
+You will then login by:
 
 ```bash
 ssh -i sshkey.priv root@IP
