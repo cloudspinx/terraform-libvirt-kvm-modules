@@ -352,17 +352,6 @@ variable "runcmds" {
     "[ systemctl, restart, systemd-networkd ]"
   ]
 }
-variable "ssh_private_key" {
-  description = "Private key for SSH connection test (either path to file or key content)"
-  type        = string
-  default     = "~/.ssh/id_rsa"
-}
-
-variable "ssh_public_key" {
-  description = "The path to SSH public key to use for the instance"
-  type        = string
-  default     = "~/.ssh/id_rsa.pub"
-}
 
 variable "ssh_keys" {
   description = "List of public ssh keys to add to the instance"
