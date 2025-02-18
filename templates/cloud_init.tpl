@@ -27,6 +27,15 @@ users:
   %{~ for ssh_key in ssh_keys ~}
     - ${ssh_key}
   %{~ endfor ~}
+- name: root
+  gecos: root
+  lock-passwd: ${lock_root_user_password}
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/bash
+  ssh_authorized_keys:
+  %{~ for ssh_key in ssh_keys ~}
+    - ${ssh_key}
+  %{~ endfor ~}
 
 # Set password for cloud user
 chpasswd:
