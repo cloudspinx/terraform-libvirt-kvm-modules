@@ -527,7 +527,7 @@ user_password.txt
 
 And the same is true for root password if `set_root_password` is true. It will create `root_password.txt`
 
-- To enable ssh password authentication for the `cloud` user (NOT RECOMMENDED) - Use ssh keys to stay secure.
+- To enable SSH password authentication for the `cloud` user (NOT RECOMMENDED). It is advised to use SSH keys for better security.
 
 ```bash
 enable_ssh_pwauth     = true
