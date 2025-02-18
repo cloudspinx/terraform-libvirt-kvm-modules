@@ -16,7 +16,7 @@ All terraform providers used:
 - local (source: hashicorp/local)
 - template (source: hashicorp/template)
 
-## Libvirt storage pool module
+## 1. Libvirt storage pool module
 
 We provide a [storage sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-module/tree/main/modules/storage-pool) in the repository that can be used to create storage pools independently.
 
@@ -79,7 +79,7 @@ Confirm creation:
  vms_pool   active   yes
 ```
 
-## Libvirt network module
+## 2. Libvirt network module
 
 The [network sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/libvirt-network) allows you to create and destroy libvirt networks.
 
@@ -186,7 +186,7 @@ terraform apply
 virsh net-list
 ```
 
-## Cloud images module
+## 3. Cloud images module
 
 To streamline instance creation, we created a [cloud images management module](https://github.com/cloudspinx/terraform-libvirt-kvm-modules/tree/main/modules/os-images)
 
@@ -278,7 +278,7 @@ The `custom_image_path_url` can also be used to specify custom image URL:
 custom_image_path_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 ```
 
-## Libvirt domains module
+## 4. Libvirt domains module
 
 The root of this repository is the domain creation module. The module provides an automated way to deploy virtual machines (VMs) using Libvirt. It includes configurable options for storage, networking, cloud-init, and other VM settings.
 
