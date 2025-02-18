@@ -280,13 +280,6 @@ variable "set_user_password" {
   default     = false
 }
 
-
-variable "expire_root_user_pass" {
-  description = "Expire root user password on first login"
-  type        = bool
-  default     = false
-}
-
 variable "ssh_user_name" {
   description = "The admin user name to created on the target instance"
   type        = string
