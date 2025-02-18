@@ -1,8 +1,8 @@
 locals {
   vm_fqdn               = "${var.vm_hostname_prefix}.${var.vm_domain}"
   # Hash the user password
-  root_password_hash = var.set_root_password ? bcrypt(random_password.root_password[0].result) : null
-  user_password_hash = var.set_user_password ? bcrypt(random_password.user_password[0].result) : null
+  root_password_hash = var.set_root_password ? bcrypt(random_password.root_password[0].result) : "null"
+  user_password_hash = var.set_user_password ? bcrypt(random_password.user_password[0].result) : "null"
 
   # SSH connection
   generated_ssh_keys = var.generate_ssh_keys ? [trimspace(tls_private_key.ssh_key[0].public_key_openssh)] : []
