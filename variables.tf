@@ -268,12 +268,6 @@ variable "lock_user_password" {
   default     = false
 }
 
-variable "enable_root_password" {
-  description = "Enable root password"
-  type        = bool
-  default     = false
-}
-
 variable "set_root_password" {
   description = "Enable setting a root password"
   type        = bool

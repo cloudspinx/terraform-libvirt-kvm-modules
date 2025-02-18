@@ -111,7 +111,7 @@ data "template_cloudinit_config" "config" {
       enable_ssh_pwauth         = var.enable_ssh_pwauth
       disable_root_login        = var.disable_root_login
       lock_root_user_password   = var.lock_root_user_password
-      enable_user_password      = var.enable_root_password
+      set_root_password         = var.set_root_password
       root_password             = local.root_password_hash
       ssh_user_name             = var.ssh_user_name
       ssh_user_fullname         = var.ssh_user_fullname

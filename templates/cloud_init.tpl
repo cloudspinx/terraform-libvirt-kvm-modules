@@ -32,7 +32,12 @@ users:
 chpasswd:
   expire: false
   users:
+  %{~ if set_root_password ~}
+  - {name: root, password: ${root_password}}
+  %{~ endif ~}
+  %{~ if set_ssh_user_password ~}
   - {name: ${ssh_user_name}, password: ${ssh_user_password}}
+  %{~ endif ~}
 
 # Grow root partition to fill the disk
 growpart:
