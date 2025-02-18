@@ -283,7 +283,7 @@ variable "set_root_password" {
 variable "set_user_password" {
   description = "Enable setting a root password"
   type        = bool
-  default     = true
+  default     = false
 }
 
 
