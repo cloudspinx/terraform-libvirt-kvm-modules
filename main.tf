@@ -176,12 +176,13 @@ resource "libvirt_volume" "vm_disk_qcow2" {
 }
 
 resource "libvirt_volume" "additional_disk" {
-  count  = var.create_additional_disk ? var.additional_disk_count : 0
-  name   = format("${var.vm_hostname_prefix}%02d-disk%02d.qcow2", count.index + var.index_start, count.index + 1)
+  count  = var.create_additional_disk ? var.vm_count * var.additional_disk_count : 0
+  name   = format("${var.vm_hostname_prefix}%02d-disk%02d.qcow2", floor(count.index / var.additional_disk_count) + var.index_start, (count.index % var.additional_disk_count) + 1)
   pool   = var.storage_pool_name
   size   = 1024 * 1024 * 1024 * var.additional_disk_size
   format = "qcow2"
 }
+
 
 # Domains creation section
 resource "libvirt_domain" "this_domain" {
@@ -223,12 +224,13 @@ resource "libvirt_domain" "this_domain" {
   disk {
     volume_id = element(libvirt_volume.vm_disk_qcow2[*].id, count.index)
   }
+
   dynamic "disk" {
-    for_each = var.create_additional_disk ? range(var.additional_disk_count) : []
-    content {
-      volume_id = element(libvirt_volume.additional_disk[*].id, disk.key)
-    }
+  for_each = var.create_additional_disk ? range(var.additional_disk_count) : []
+  content {
+    volume_id = libvirt_volume.additional_disk[(count.index * var.additional_disk_count) + disk.value].id
   }
+}
 
   dynamic "filesystem" {
     for_each = var.share_filesystem.source != null ? [var.share_filesystem.source] : []
