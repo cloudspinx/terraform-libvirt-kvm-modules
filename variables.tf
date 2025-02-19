@@ -182,10 +182,10 @@ variable "network_dhcp_enabled" {
 }
 
 ## Instance network variables
-variable "network_config" {
-  description = "A user defined cloudinit network config"
+variable "network_interface" {
+  description = "The network interface for the instance"
   type        = string
-  default     = ""
+  default     = "ens3"
 }
 
 variable "use_dhcp" {

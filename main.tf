@@ -142,7 +142,7 @@ data "template_cloudinit_config" "network" {
       vm_ip_address    = element(var.vm_ip_address, count.index)
       vm_ip_gateway    = var.vm_ip_gateway
       vm_dns_servers   = var.vm_dns_servers
-      nic              = (var.share_filesystem.source == null ? "ens3" : "ens4")
+      nic              = var.network_interface
     })
   }
 }
