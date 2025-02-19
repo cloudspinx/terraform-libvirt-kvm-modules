@@ -130,8 +130,8 @@ data "template_cloudinit_config" "config" {
 
 data "template_cloudinit_config" "network" {
   count         = var.vm_count
-  gzip          = true
-  base64_encode = true
+  gzip          = false
+  base64_encode = false
 
   # Main cloud-config configuration file.
   part {
