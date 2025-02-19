@@ -176,7 +176,7 @@ resource "libvirt_volume" "vm_disk_qcow2" {
 }
 
 resource "libvirt_volume" "additional_disk" {
-  count  = var.create_additional_disk ? length(var.additional_disk_count) : 0
+  count  = var.create_additional_disk ? var.additional_disk_count : 0
   name   = format("${var.vm_hostname_prefix}%02d-disk%02d.qcow2", count.index + var.index_start, count.index + 1)
   pool   = var.storage_pool_name
   size   = 1024 * 1024 * 1024 * var.additional_disk_size
@@ -223,11 +223,10 @@ resource "libvirt_domain" "this_domain" {
   disk {
     volume_id = element(libvirt_volume.vm_disk_qcow2[*].id, count.index)
   }
-
   dynamic "disk" {
-    for_each = var.create_additional_disk ? [var.additional_disk_count] : []
+    for_each = var.create_additional_disk ? range(var.additional_disk_count) : []
     content {
-      volume_id = element(libvirt_volume.additional_disk[*].id, count.index)
+      volume_id = element(libvirt_volume.additional_disk[*].id, disk.key)
     }
   }
 
