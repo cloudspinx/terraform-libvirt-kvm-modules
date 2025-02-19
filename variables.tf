@@ -197,7 +197,7 @@ variable "use_dhcp" {
 variable "vm_ip_address" {
   description = "List of IP addresses for the instance"
   type        = list(string)
-  default     = ["192.168.122.101/24"]
+  default     = []
 }
 
 variable "vm_ip_gateway" {
