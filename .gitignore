@@ -7,6 +7,7 @@
 
 # Terraform lockfile
 .terraform.lock.hcl
+*.hcl
 
 # .tfstate files
 *.tfstate
@@ -38,3 +39,4 @@ terraform.rc
 *.swp
 *.bak
 *.tmp
+*.backup
