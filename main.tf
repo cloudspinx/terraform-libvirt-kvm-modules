@@ -148,10 +148,11 @@ data "template_cloudinit_config" "network" {
 }
 
 resource "libvirt_cloudinit_disk" "commoninit" {
-  count = var.vm_count
-  name  = format("${var.vm_hostname_prefix}_init%02d.iso", count.index + 1)
-  user_data = data.template_cloudinit_config.config[count.index].rendered
+  count          = var.vm_count
+  name           = format("${var.vm_hostname_prefix}_init%02d.iso", count.index + 1)
+  user_data      = data.template_cloudinit_config.config[count.index].rendered
   network_config = data.template_cloudinit_config.network[count.index].rendered
+  pool           = var.create_storage_pool ? module.storage_pool[0].name : var.storage_pool_name
 }
 
 # Volume creation section
