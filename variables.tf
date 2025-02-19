@@ -131,6 +131,24 @@ variable "share_filesystem" {
   }
 }
 
+variable "create_additional_disk" {
+  description = "Whether to create additional disks"
+  type        = bool
+  default     = false
+}
+
+variable "additional_disk_size" {
+  description = "Additional disk size (in GB)"
+  type        = number
+  default     = 0
+}
+
+variable "additional_disk_count" {
+  description = "Number of additional disks to attach"
+  type        = number
+  default     = 0
+}
+
 ## Network sub-module variables
 
 variable "create_network" {
