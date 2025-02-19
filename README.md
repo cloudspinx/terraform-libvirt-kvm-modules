@@ -1,6 +1,13 @@
 # Terraform modules to create libvirt storage pools, networks, and vm domains
 
-This repository contains Terraform module for managing KVM resources.
+This repository contains Terraform module for managing KVM resources. It enables you to automate creation of storage pools, networks, cloud image downloads, and virtual machines.
+
+### What it can do:
+- Create storage pool(s)
+- Create NAT and Bridged network(s)
+- Create a single or multiple virtual machines
+- Configure instances to use DHCP or Static IP addresses
+- Option to add extra disks to the VMs
 
 ## Requirements
 The following are the main requirements for using the module to create instances on KVM using the module
