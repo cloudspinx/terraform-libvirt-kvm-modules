@@ -178,7 +178,7 @@ resource "libvirt_volume" "vm_disk_qcow2" {
 resource "libvirt_volume" "additional_disk" {
   count  = var.create_additional_disk ? var.vm_count * var.additional_disk_count : 0
   name   = format("${var.vm_hostname_prefix}%02d-disk%02d.qcow2", floor(count.index / var.additional_disk_count) + var.index_start, (count.index % var.additional_disk_count) + 1)
-  pool   = var.storage_pool_name
+  pool   = var.create_storage_pool ? module.storage_pool[0].name : var.storage_pool_name
   size   = 1024 * 1024 * 1024 * var.additional_disk_size
   format = "qcow2"
 }
