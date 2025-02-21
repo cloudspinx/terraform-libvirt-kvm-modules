@@ -247,7 +247,7 @@ variable "preserve_hostname" {
 variable "manage_etc_hosts" {
   description = "Manage the /etc/hosts file"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_hostname_file" {
