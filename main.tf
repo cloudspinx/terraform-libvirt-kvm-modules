@@ -121,6 +121,7 @@ data "template_cloudinit_config" "config" {
       lock_user_password        = var.lock_user_password
       packages                  = var.packages
       runcmds                   = var.runcmds
+      bootcmds                  = var.bootcmds
       ssh_keys                  = local.combined_ssh_keys
       disable_ipv6              = var.disable_ipv6
       package_update            = var.package_update
