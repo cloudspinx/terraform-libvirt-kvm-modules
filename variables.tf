@@ -218,12 +218,9 @@ variable "ip_address" {
   default     = []
 }
 
-varble
-
 variable "gateway" {
   description = "The IP address of the gateway"
   type        = string
-  default     = "192.168.122.1"
   }
 
   variable "nameservers" {
