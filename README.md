@@ -93,22 +93,22 @@ The [network sub-module](https://github.com/cloudspinx/terraform-libvirt-kvm-mod
 ### Inputs
 
 | Name                  | Description                                 | Type         | Default                 |
-|-----------------------|---------------------------------------------|-------------|-------------------------|
-| `create_network`      | Whether to create the libvirt network      | bool        | `false`                 |
-| `network_name`        | The name of the libvirt network            | string      | `"private"`             |
-| `network_bridge`      | The bridge device for the network          | string      | `"virbr10"`             |
-| `network_mode`        | The network mode (e.g., nat, bridge)       | string      | `"nat"`                 |
-| `network_mtu`        | The MTU for the network                    | number      | `1500`                  |
-| `network_autostart`   | Whether the network should autostart       | bool        | `true`                  |
-| `network_cidr`       | List of CIDR addresses for the network     | list(string) | `["172.21.0.0/24"]`     |
-| `network_dhcp_enabled` | Whether DHCP is enabled for the network   | bool        | `true`                  |
+|-----------------------|---------------------------------------------|--------------|-------------------------|
+| `create_network`      | Whether to create the libvirt network       | bool         | `false`                 |
+| `network_name`        | The name of the libvirt network             | string       | `"private"`             |
+| `network_bridge`      | The bridge device for the network           | string       | `"virbr10"`             |
+| `network_mode`        | The network mode (e.g., nat, bridge)        | string       | `"nat"`                 |
+| `network_mtu`         | The MTU for the network                     | number       | `1500`                  |
+| `network_autostart`   | Whether the network should autostart        | bool         | `true`                  |
+| `network_cidr`        | List of CIDR addresses for the network      | list(string) | `["172.21.0.0/24"]`     |
+| `network_dhcp_enabled`| Whether DHCP is enabled for the network     | bool         | `true`                  |
 
 ### Outputs
 
-| Name         | Description                          |
-|-------------|--------------------------------------|
+| Name         | Description                           |
+|--------------|---------------------------------------|
 | `network_id` | The ID of the created libvirt network |
-| `name`       | The name of the libvirt network      |
+| `name`       | The name of the libvirt network       |
 
 ### Example 1: Create nat libvirt network
 
@@ -355,8 +355,8 @@ Each resource is conditionally created based on module variables to provide flex
 | `network_cidr`         | List of CIDR addresses for the network  | `list(string)` | `["172.21.0.0/24"]`      |
 | `network_dhcp_enabled` | Whether DHCP is enabled for the network | `bool`         | `true`                   |
 | `use_dhcp`             | Whether to use DHCP or Static IP        | `bool`         | `true`                   |
-| `vm_ip_address`        | List of IP addresses for the instance   | `list(string)` | `["192.168.122.101/24"]` |
-| `vm_ip_gateway`        | The IP address of the gateway           | `string`       | `192.168.122.1`          |
+| `ip_address`           | List of IP addresses for the instance   | `list(string)` | `["192.168.122.101/24"]` |
+| `gateway`              | The IP address of the gateway           | `string`       | `192.168.122.1`          |
 | `vm_dns_servers`       | List of DNS servers                     | `list(string)` | `["8.8.8.8", "1.1.1.1"]` |
 
 #### Cloud-Init Variables
@@ -398,8 +398,8 @@ Each resource is conditionally created based on module variables to provide flex
 | `ssh_user_name` | The SSH username for connecting to the VMs | No  |
 | `root_password` | The root password (if set) | Yes |
 | `user_password` | The user password (if set) | Yes |
-| `all_vm_ips` | A map of VM names to their assigned IP addresses | No  |
-| `ssh_commands` | SSH connection commands for each VM | No  |
+| `all_vm_ips`    | A map of VM names to their assigned IP addresses | No  |
+| `ssh_commands`  | SSH connection commands for each VM | No  |
 
 ### Usage
 

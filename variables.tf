@@ -212,19 +212,21 @@ variable "use_dhcp" {
   default     = true
 }
 
-variable "vm_ip_address" {
+variable "ip_address" {
   description = "List of IP addresses for the instance"
   type        = list(string)
   default     = []
 }
 
-variable "vm_ip_gateway" {
+
+
+variable "gateway" {
   description = "The IP address of the gateway"
   type        = string
   default     = "192.168.122.1"
   }
 
-  variable "vm_dns_servers" {
+  variable "nameservers" {
   description = "List of DNS servers"
   type        = list(string)
   default     = ["8.8.8.8","1.1.1.1"]

@@ -139,9 +139,9 @@ data "template_cloudinit_config" "network" {
     content_type = "text/cloud-config"
     content      = templatefile("${path.module}/templates/${var.use_dhcp == true ? "dhcp" : "static"}_network_config.tpl",
     {
-      vm_ip_address    = element(var.vm_ip_address, count.index)
-      vm_ip_gateway    = var.vm_ip_gateway
-      vm_dns_servers   = var.vm_dns_servers
+      ip_address       = element(var.ip_address, count.index)
+      gateway          = var.gateway
+      vm_dns_servers   = var.nameservers
       nic              = var.network_interface
     })
   }
