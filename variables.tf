@@ -345,27 +345,28 @@ variable "packages" {
     "git"
   ]
 }
-# variable "bootcmds" {
-#   description = "Commands to disable predictable network names"
-#   type        = list(string)
-#   default = [
-#     "sed -i 's/GRUB_CMDLINE_LINUX=\"/& net.ifnames=0 biosdevname=0/' /etc/default/grub",
-#     "if [ -f /etc/redhat-release ]; then grub2-mkconfig -o /boot/grub2/grub.cfg; elif [ -f /etc/debian_version ]; then update-grub; fi",
-#     "reboot"
-#   ]
-# }
 
 variable "bootcmds" {
-  description = "Commands to disable predictable network names"
+  description = "Commands to configure network interfaces and update GRUB"
   type        = list(string)
   default = [
     "sed -i 's/GRUB_CMDLINE_LINUX=\"/& net.ifnames=0 biosdevname=0/' /etc/default/grub",
-    "if [ -f /etc/redhat-release ]; then grub2-mkconfig -o /boot/grub2/grub.cfg; "
-    "elif [ -f /etc/debian_version ]; then update-grub; "
-    "elif [ -f /etc/arch-release ]; then grub-mkconfig -o /boot/grub/grub.cfg; "
-    "elif [ -f /etc/alpine-release ]; then update-grub; "
-    "elif [ -f /etc/os-release ] && grep -qi suse /etc/os-release; then grub2-mkconfig -o /boot/grub2/grub.cfg; "
-    "else echo 'Unknown OS: manual intervention required' > /tmp/grub-update.log; fi",
+    <<EOT
+    if [ -f /etc/redhat-release ]; then
+      grub2-mkconfig -o /boot/grub2/grub.cfg;
+    elif [ -f /etc/debian_version ]; then
+      update-grub;
+    elif [ -f /etc/arch-release ]; then
+      grub-mkconfig -o /boot/grub/grub.cfg;
+    elif [ -f /etc/alpine-release ]; then
+      update-grub;
+    elif [ -f /etc/os-release ] && grep -qi suse /etc/os-release; then
+      grub2-mkconfig -o /boot/grub2/grub.cfg;
+    else
+      echo 'Unknown OS: manual intervention required' > /tmp/grub-update.log;
+    fi
+    EOT
+    ,
     "reboot"
   ]
 }
