@@ -63,6 +63,14 @@ packages:
   %{~ endfor ~}
 %{ endif ~}
 
+# kernel boot parameter override
+%{ if length(bootcmds) > 0 ~}
+bootcmd:
+  %{~ for cmd in bootcmds ~}
+  - ${cmd}
+  %{~ endfor ~}
+%{ endif ~}
+
 # Command to execute after the first boot (only once)
 %{ if length(runcmds) > 0 ~}
 runcmd:
