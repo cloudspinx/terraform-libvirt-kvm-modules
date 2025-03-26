@@ -199,8 +199,8 @@ To streamline instance creation, we created a [cloud images management module](h
 
 ### 1. Automatic image download (Default) - using the module
 
-- Users can specify `os_name`, and optionally a `version`.  
-- If `version` is not provided, the latest available version is used.  
+- Users can specify `os_name`, and optionally a `version`.
+- If `version` is not provided, the latest available version is used.
 - Terraform will automatically download the required cloud image during provisioning.
 
 Table of images populated into sub-module: `modules/os-images`:
@@ -257,10 +257,10 @@ os_version          = "8"
 os_name             = "debian"
 ```
 
-#### 2. Cached Image Approach (Recommended for slow networks)  
+#### 2. Cached Image Approach (Recommended for slow networks)
 
-- Instead of downloading the image every time, users can pre-cache frequently used images locally.  
-- The module allows specifying a local path for the image, bypassing the need for downloads.  
+- Instead of downloading the image every time, users can pre-cache frequently used images locally.
+- The module allows specifying a local path for the image, bypassing the need for downloads.
 - This approach is particularly useful in development environments where instances are frequently created and destroyed. Or if bandwidth is an issue.
 
 
@@ -401,7 +401,7 @@ Each resource is conditionally created based on module variables to provide flex
 | `all_vm_ips` | A map of VM names to their assigned IP addresses | No  |
 | `ssh_commands` | SSH connection commands for each VM | No  |
 
-### Usage
+### Basic usage example
 
 In your `main.tf` file define required providers and initialize.
 
@@ -532,7 +532,7 @@ The SSH private key is `sshkey.priv` and the ssh public key is `sshkey.pub`. As 
 
 - Passing an additional list of SSH public keys to be added:
 
-```bash
+```yaml
 ssh_keys = [
   "ssh-pubkey-1",
   "ssh-pubkey-2"
@@ -576,7 +576,7 @@ ssh_user_fullname = "Cloud Admin"
 ```
 - Setting the default list of packages to install on first boot
 
-```bash
+```yaml
 packages = [
     "qemu-guest-agent",
     "vim",
@@ -590,8 +590,8 @@ packages = [
 
 - List of commands to run on first boot
 
-```bash
-runcmds = = [
+```yaml
+runcmds = [
     "[ systemctl, daemon-reload ]",
     "[ systemctl, enable, qemu-guest-agent ]",
     "[ systemctl, start, qemu-guest-agent ]",
