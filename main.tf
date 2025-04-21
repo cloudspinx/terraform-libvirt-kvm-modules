@@ -241,12 +241,12 @@ resource "libvirt_domain" "this_domain" {
       accessmode = var.share_filesystem.mode
     }
   }
-  # dynamic "graphics" {
-  #   for_each = var.graphics == "none" ? [] : [var.graphics]
-  #   content {
-  #     type        = graphics.value
-  #     listen_type = "address"
-  #     autoport    = true
-  #   }
-  # }
+  dynamic "graphics" {
+    for_each = var.graphics == "none" ? [] : [var.graphics]
+    content {
+      type        = graphics.value
+      listen_type = "address"
+      autoport    = true
+    }
+  }
 }

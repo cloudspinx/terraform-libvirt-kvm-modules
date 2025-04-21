@@ -94,7 +94,7 @@ variable "index_start" {
 variable "graphics" {
   description = "Graphics type for instance installation"
   type        = string
-  default     = "none"
+  default     = "vnc"
 
   validation {
     condition     = contains(["spice", "vnc", "none"], var.graphics)
