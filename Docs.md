@@ -69,7 +69,7 @@
 | <a name="input_disable_root_login"></a> [disable\_root\_login](#input\_disable\_root\_login) | Disable root user login | `bool` | `true` | no |
 | <a name="input_enable_ssh_pwauth"></a> [enable\_ssh\_pwauth](#input\_enable\_ssh\_pwauth) | Enable ssh password login | `bool` | `false` | no |
 | <a name="input_generate_ssh_keys"></a> [generate\_ssh\_keys](#input\_generate\_ssh\_keys) | Generate SSH keys for the instance | `bool` | `true` | no |
-| <a name="input_graphics"></a> [graphics](#input\_graphics) | Graphics type for instance installation | `string` | `"none"` | no |
+| <a name="input_graphics"></a> [graphics](#input\_graphics) | Graphics type for instance installation | `string` | `"vnc"` | no |
 | <a name="input_index_start"></a> [index\_start](#input\_index\_start) | The starting index for the VMs | `number` | `1` | no |
 | <a name="input_lock_root_user_password"></a> [lock\_root\_user\_password](#input\_lock\_root\_user\_password) | Lock root user password | `bool` | `true` | no |
 | <a name="input_lock_user_password"></a> [lock\_user\_password](#input\_lock\_user\_password) | Lock root user password | `bool` | `false` | no |
@@ -109,7 +109,7 @@
 | <a name="input_vm_dns_servers"></a> [vm\_dns\_servers](#input\_vm\_dns\_servers) | List of DNS servers | `list(string)` | <pre>[<br/>  "8.8.8.8",<br/>  "1.1.1.1"<br/>]</pre> | no |
 | <a name="input_vm_domain"></a> [vm\_domain](#input\_vm\_domain) | The VM's domain that forms the FQDN. | `string` | `"example.com"` | no |
 | <a name="input_vm_hostname_prefix"></a> [vm\_hostname\_prefix](#input\_vm\_hostname\_prefix) | The prefix for the VM name | `string` | `"vm"` | no |
-| <a name="input_vm_ip_address"></a> [vm\_ip\_address](#input\_vm\_ip\_address) | List of IP addresses for the instance | `list(string)` | `[]` | no |
+| <a name="input_vm_ip_address"></a> [vm\_ip\_address](#input\_vm\_ip\_address) | List of IP addresses for the instance | `list(string)` | <pre>[<br/>  "192.168.122.31/24"<br/>]</pre> | no |
 | <a name="input_vm_ip_gateway"></a> [vm\_ip\_gateway](#input\_vm\_ip\_gateway) | The IP address of the gateway | `string` | `"192.168.122.1"` | no |
 
 ## Outputs
