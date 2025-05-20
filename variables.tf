@@ -94,7 +94,7 @@ variable "index_start" {
 variable "graphics" {
   description = "Graphics type for instance installation"
   type        = string
-  default     = "none"
+  default     = "vnc"
 
   validation {
     condition     = contains(["spice", "vnc", "none"], var.graphics)
@@ -215,7 +215,7 @@ variable "use_dhcp" {
 variable "vm_ip_address" {
   description = "List of IP addresses for the instance"
   type        = list(string)
-  default     = ["192.168.122.200"]
+  default     = ["192.168.122.31/24"]
 }
 
 variable "vm_ip_gateway" {
