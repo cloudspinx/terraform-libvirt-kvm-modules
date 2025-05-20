@@ -109,7 +109,7 @@
 | <a name="input_vm_dns_servers"></a> [vm\_dns\_servers](#input\_vm\_dns\_servers) | List of DNS servers | `list(string)` | <pre>[<br/>  "8.8.8.8",<br/>  "1.1.1.1"<br/>]</pre> | no |
 | <a name="input_vm_domain"></a> [vm\_domain](#input\_vm\_domain) | The VM's domain that forms the FQDN. | `string` | `"example.com"` | no |
 | <a name="input_vm_hostname_prefix"></a> [vm\_hostname\_prefix](#input\_vm\_hostname\_prefix) | The prefix for the VM name | `string` | `"vm"` | no |
-| <a name="input_vm_ip_address"></a> [vm\_ip\_address](#input\_vm\_ip\_address) | List of IP addresses for the instance | `list(string)` | `[]` | no |
+| <a name="input_vm_ip_address"></a> [vm\_ip\_address](#input\_vm\_ip\_address) | List of IP addresses for the instance | `list(string)` | <pre>[<br/>  "192.168.122.200"<br/>]</pre> | no |
 | <a name="input_vm_ip_gateway"></a> [vm\_ip\_gateway](#input\_vm\_ip\_gateway) | The IP address of the gateway | `string` | `"192.168.122.1"` | no |
 
 ## Outputs
