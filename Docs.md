@@ -4,7 +4,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_libvirt"></a> [libvirt](#requirement\_libvirt) | 0.8.1 |
+| <a name="requirement_libvirt"></a> [libvirt](#requirement\_libvirt) | 0.8.3 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.2 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.3 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | 2.2.0 |
@@ -14,7 +14,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_libvirt"></a> [libvirt](#provider\_libvirt) | 0.8.1 |
+| <a name="provider_libvirt"></a> [libvirt](#provider\_libvirt) | 0.8.3 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.2 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
@@ -32,11 +32,11 @@
 
 | Name | Type |
 |------|------|
-| [libvirt_cloudinit_disk.commoninit](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.1/docs/resources/cloudinit_disk) | resource |
-| [libvirt_domain.this_domain](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.1/docs/resources/domain) | resource |
-| [libvirt_volume.additional_disk](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.1/docs/resources/volume) | resource |
-| [libvirt_volume.base_image](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.1/docs/resources/volume) | resource |
-| [libvirt_volume.vm_disk_qcow2](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.1/docs/resources/volume) | resource |
+| [libvirt_cloudinit_disk.commoninit](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.3/docs/resources/cloudinit_disk) | resource |
+| [libvirt_domain.this_domain](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.3/docs/resources/domain) | resource |
+| [libvirt_volume.additional_disk](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.3/docs/resources/volume) | resource |
+| [libvirt_volume.base_image](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.3/docs/resources/volume) | resource |
+| [libvirt_volume.vm_disk_qcow2](https://registry.terraform.io/providers/dmacvicar/libvirt/0.8.3/docs/resources/volume) | resource |
 | [local_sensitive_file.root_password](https://registry.terraform.io/providers/hashicorp/local/2.5.2/docs/resources/sensitive_file) | resource |
 | [local_sensitive_file.ssh_private_key](https://registry.terraform.io/providers/hashicorp/local/2.5.2/docs/resources/sensitive_file) | resource |
 | [local_sensitive_file.ssh_public_key](https://registry.terraform.io/providers/hashicorp/local/2.5.2/docs/resources/sensitive_file) | resource |
