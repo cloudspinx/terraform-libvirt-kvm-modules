@@ -211,36 +211,36 @@ If version is not specified, it will default to using the latest version for tha
 
 | **OS Name**       | **Version** | **Latest Version(Default choice)** |
 |-------------------|------------|--------------------|
-| **ubuntu**       | latest     | 24.04              |
-|                 | 24.04      |                    |
-|                 | 20.04      |                    |
-|                 | 18.04      |                    |
-|                 | 16.04      |                    |
-| **rockylinux**   | latest     | 9                  |
-|                 | 9          |                    |
-|                 | 8          |                    |
-| **almalinux**    | latest     | 9                  |
-|                 | 9          |                    |
-|                 | 8          |                    |
-| **oraclelinux**  | latest     | 9                  |
-|                 | 9          |                    |
-|                 | 8          |                    |
-| **centos-stream**| latest     | 9                  |
-|                 | 9          |                    |
-| **debian**       | latest     | 12                 |
-|                 | 12         |                    |
-|                 | 11         |                    |
-|                 | 10         |                    |
-| **fedora**       | latest     | 41                 |
-|                 | 40         |                    |
-| **alpine**       | latest     | 3.21               |
-|                 | 3.20       |                    |
-| **amazonlinux**  | latest     | 2023               |
-| **opensuse**     | latest     | 15.6               |
-|                 | 15.5       |                    |
-| **archlinux**   | latest     | latest             |
-| **freebsd**      | latest     | 14                 |
-|                 | 13         |                    |
+| **ubuntu**        | latest     | 24.04              |
+|                   | 24.04      |                    |
+|                   | 20.04      |                    |
+|                   | 18.04      |                    |
+|                   | 16.04      |                    |
+| **rockylinux**    | latest     | 9                  |
+|                   | 9          |                    |
+|                   | 8          |                    |
+| **almalinux**     | latest     | 9                  |
+|                   | 9          |                    |
+|                   | 8          |                    |
+| **oraclelinux**   | latest     | 9                  |
+|                   | 9          |                    |
+|                   | 8          |                    |
+| **centos-stream** | latest     | 9                  |
+|                   | 9          |                    |
+| **debian**        | latest     | 12                 |
+|                   | 12         |                    |
+|                   | 11         |                    |
+|                   | 10         |                    |
+| **fedora**        | latest     | 42                 |
+|                   | 41         |                    |
+| **alpine**        | latest     | 3.21               |
+|                   | 3.20       |                    |
+| **amazonlinux**   | latest     | 2023               |
+| **opensuse**      | latest     | 15.6               |
+|                   | 15.5       |                    |
+| **archlinux**     | latest     | latest             |
+| **freebsd**       | latest     | 14                 |
+|                   | 13         |                    |
 
 Usage example:
 
