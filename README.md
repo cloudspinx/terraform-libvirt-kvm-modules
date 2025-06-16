@@ -61,7 +61,9 @@ provider "libvirt" {
 }
 
 module "storage_pool" {
-  source              = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/storage-pool?ref=main"
+  source  = "cloudspinx/kvm-modules/libvirt"
+  #version = "1.1.1"
+  #source              = "git::https://github.com/cloudspinx/terraform-kvm-modules.git//modules/storage-pool?ref=main"
   create_storage_pool = true
   storage_pool_name   = "vms_pool"       # Set to name you want to use
   storage_pool_path   = "/data/vms_pool" # Path to use for the pool. Make sure not used by another pool `virsh pool-list`
